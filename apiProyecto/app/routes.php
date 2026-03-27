@@ -15,8 +15,10 @@ return function (App $app) {
         return $response;
     });
 
-    $app->get('/', function (Request $request, Response $response) {
-        $response->getBody()->write('Hello world!');
+
+    //CRUD USUARIOS
+    $app->get('/test', function (Request $request, Response $response) {
+        $response->getBody()->write('API funcionando');
         return $response;
     });
 
