@@ -1,0 +1,65 @@
+/* =========================================
+   ESTILOS ESPECÍFICOS: LOGIN & REGISTRO
+   ========================================= */
+
+.auth-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animación de Gradiente Complejo (Fondo) */
+.auth-background {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        #0A2540, /* Azul Marino */
+        #123c69,
+        #FF6B00, /* Naranja Dinámico */
+        #0A2540
+    );
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    z-index: 0;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Efecto sobre la tarjeta */
+.auth-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.auth-card:hover {
+    transform: translateY(-5px);
+}
+
+.z-index-2 {
+    z-index: 2;
+}
+
+.back-link {
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: var(--accent-color) !important;
+}
+
+/* Ajustes de inputs */
+.input-group-text {
+    border: 1px solid #dee2e6;
+}
+.form-control.bg-light:focus + .btn-light {
+    border-color: var(--accent-color);
+}

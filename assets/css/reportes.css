@@ -1,0 +1,56 @@
+/* =========================================
+   ESTILOS ESPECÍFICOS: PANEL DE REPORTES
+   ========================================= */
+
+.admin-dashboard {
+    min-height: 85vh;
+}
+
+/* Tarjetas KPI */
+.kpi-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 12px;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+}
+
+.kpi-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* Gráficos */
+canvas {
+    max-width: 100%;
+}
+
+/* Tabla de datos */
+.table th {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: #6c757d;
+}
+
+.table td {
+    font-size: 0.9rem;
+}
+
+/* Botones de exportación */
+.btn-outline-success, .btn-outline-danger {
+    transition: all 0.3s ease;
+}
+
+.btn-outline-success:hover {
+    background-color: #198754;
+    color: white;
+}

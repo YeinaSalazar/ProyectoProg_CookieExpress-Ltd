@@ -1,0 +1,111 @@
+/* =========================================
+   ESTILOS ESPECÍFICOS: DASHBOARD PAQUETES
+   ========================================= */
+
+.dashboard-wrapper {
+    min-height: 80vh;
+}
+
+/* Estilos de la lista de paquetes */
+.paquete-item {
+    transition: background-color 0.2s ease;
+}
+
+.paquete-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Efecto para miniatura de imagen */
+.paquete-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #dee2e6;
+}
+
+.paquete-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* =========================================
+   COMPONENTE TIMELINE DE RASTREO
+   ========================================= */
+.tracking-timeline {
+    position: relative;
+    padding-left: 30px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Línea vertical */
+.tracking-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 7px;
+    height: 100%;
+    width: 2px;
+    background-color: #e9ecef;
+}
+
+.timeline-step {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.timeline-step:last-child {
+    margin-bottom: 0;
+}
+
+/* El punto en la línea de tiempo */
+.timeline-step::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ced4da; /* Estado inactivo por defecto */
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px #ced4da;
+    z-index: 1;
+}
+
+/* Estados activos/completados */
+.timeline-step.completed::before {
+    background-color: var(--primary-color);
+    box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.timeline-step.current::before {
+    background-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(255, 107, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 107, 0, 0); }
+}
+
+/* Badges Personalizados */
+.badge-soft-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #856404;
+}
+
+.badge-soft-primary {
+    background-color: rgba(10, 37, 64, 0.1);
+    color: var(--primary-color);
+}
+
+.badge-soft-success {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #0f5132;
+}

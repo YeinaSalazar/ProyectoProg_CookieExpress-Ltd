@@ -1,0 +1,43 @@
+/* =========================================
+   ESTILOS ESPECÍFICOS: CONTACTO
+   ========================================= */
+
+/* Efecto hover en las tarjetas de información */
+.contact-info-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 4px solid transparent;
+}
+
+.contact-info-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important;
+    border-left-color: var(--accent-color);
+}
+
+/* Estilos personalizados para el Acordeón (FAQ) para que coincida con la marca */
+.accordion-button:not(.collapsed) {
+    background-color: rgba(10, 37, 64, 0.05); /* Azul corporativo muy claro */
+    color: var(--primary-color);
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0,0,0,.125);
+}
+
+.accordion-button::after {
+    filter: grayscale(100%);
+}
+
+.accordion-button:not(.collapsed)::after {
+    filter: none;
+}
+
+/* Utilidad de color */
+.bg-accent-corp {
+    background-color: var(--accent-color) !important;
+}
+.text-accent-corp {
+    color: var(--accent-color) !important;
+}

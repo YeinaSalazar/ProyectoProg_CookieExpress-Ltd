@@ -1,0 +1,91 @@
+/* =========================================
+   VARIABLES GLOBALES (Identidad Corporativa)
+   ========================================= */
+:root {
+    --primary-color: #0A2540;     /* Azul Marino */
+    --accent-color: #FF6B00;      /* Naranja Dinámico */
+    --accent-hover: #E65A00;
+    --text-color: #333333;
+    --bg-light: #F8F9FA;
+    
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+/* =========================================
+   RESET Y ESTILOS BASE
+   ========================================= */
+body {
+    font-family: var(--font-body);
+    color: var(--text-color);
+    background-color: var(--bg-light);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Permite que el footer se quede abajo */
+}
+
+h1, h2, h3, h4, h5, h6, .font-montserrat {
+    font-family: var(--font-heading);
+}
+
+/* Scroll Suave */
+html {
+    scroll-behavior: smooth;
+}
+
+/* =========================================
+   CLASES UTILITARIAS PERSONALIZADAS
+   ========================================= */
+.bg-primary-corp {
+    background-color: var(--primary-color) !important;
+}
+
+.text-accent-corp {
+    color: var(--accent-color) !important;
+}
+
+.btn-accent-corp {
+    background-color: var(--accent-color);
+    color: white;
+    font-weight: 500;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-accent-corp:hover {
+    background-color: var(--accent-hover);
+    color: white;
+    transform: translateY(-2px); /* Efecto elevación UI */
+    box-shadow: 0 4px 8px rgba(255, 107, 0, 0.3);
+}
+
+/* Estilización para inputs y forms (UI Moderna) */
+.form-control {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.form-control:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.25rem rgba(255, 107, 0, 0.25);
+}
+
+/* =========================================
+   COMPONENTES UI GLOBALES
+   ========================================= */
+/* Ajuste para que la vista siempre ocupe el alto disponible */
+main {
+    flex: 1;
+}
+
+/* Loader para peticiones AJAX */
+#ajax-loader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255,255,255,0.8);
+    z-index: 9999;
+    display: none; /* Se activa vía global.js */
+    justify-content: center;
+    align-items: center;
+}
