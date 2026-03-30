@@ -18,6 +18,8 @@ return function (App $app) {
 
 
     //CRUD USUARIOS
+
+    //Crear usuario
     $app->post('/crearUsuario', function (Request $request, Response $response) {
         //Abrir conexion
         $db = Conexion();
@@ -58,6 +60,44 @@ return function (App $app) {
         //Cerrar conexion
         $db -> Close();
         $response -> getBody()->write(($res ? 'true' : 'false'));
+        return $response;
+    });
+
+    //Actualizar Datos de usuario
+    $app->put('/actualizarUsuario', function (Request $request, Response $response) {
+        $db = Conexion();
+
+        $datos = $request->getQueryParams();
+
+        //Definir el identificador obligatorio del usuario
+        if (empty($datos['id_usuario'])) {
+            $response->getBody()->write('false');
+            return $response->withStatus(400);
+        }
+        $id = (int)$datos['id_usuario'];
+
+
+        //Armar el arreglo con campos que vienen
+        $reg = [];
+
+        if (!empty($datos['nombre_usuario'])) $reg['nombre_usuario'] = $datos['nombre_usuario'];
+        if (!empty($datos['correo'])) $reg['correo'] = $datos['correo'];
+        if (!empty($datos['password'])) $reg['password'] = $datos['password'];
+        if (!empty($datos['rol_id'])) $reg['rol_id'] = (int)$datos['rol_id'];
+
+
+        //Validar al menos que haya 1 campo a actualizar
+        if (count($reg) === 0) {
+            $response->getBody()->write('false');
+            return $response->withStatus(400);
+        }
+
+        //Ejecutar la actualizacion en la BD
+        $res = $db->autoExecute("usuarios", $reg, "UPDATE", "id_usuario = $id");
+
+        //Responder y cerrar conexion
+        $db->Close();
+        $response->getBody()->write($res ? 'true' : 'false');
         return $response;
     });
 
