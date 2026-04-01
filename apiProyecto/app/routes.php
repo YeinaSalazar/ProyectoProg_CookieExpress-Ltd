@@ -5,6 +5,7 @@ include "../public/conexion.php";
 
 use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\ViewUserAction;
+use App\Domain\User\User;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -18,6 +19,7 @@ return function (App $app) {
 
 
     //CRUD USUARIOS
+
 
     //Crear usuario
     $app->post('/crearUsuario', function (Request $request, Response $response) {
@@ -63,6 +65,7 @@ return function (App $app) {
         return $response;
     });
 
+
     //Actualizar Datos de usuario
     $app->put('/actualizarUsuario', function (Request $request, Response $response) {
         $db = Conexion();
@@ -98,6 +101,128 @@ return function (App $app) {
         //Responder y cerrar conexion
         $db->Close();
         $response->getBody()->write($res ? 'true' : 'false');
+        return $response;
+    });
+
+
+    //Eliminar usuario
+    $app->delete('/deleteUsuario/{id}', function (Request $request, Response $response, array $args) {
+        //Obtener id desde la url
+        $id = (int) $args['id'];
+
+        $db = Conexion();
+
+        //Validar que el ID sea valido
+        if ($id <= 0) {
+            $response->getBody()->write('false');
+            return $response->withStatus(400);
+        }
+
+        //Verificar que el registro existe antes de borrar
+        $user = $db->GetRow("SELECT id_usuario FROM usuarios WHERE id_usuario = $id");
+
+        if (!$user) {
+            $response->getBody()->write('false');
+            return $response->withStatus(400);
+        }
+        else {
+            $sql = "DELETE FROM usuarios WHERE id_usuario = $id";
+            $res = $db->Execute($sql);
+        }
+
+        $db->Close();
+
+    
+        $response->getBody()->write($res ? 'true' : 'false');
+        return $response;
+    });
+
+
+    //Obtener usuario
+    $app->get('/getbyIdUsuario/{id}', function (Request $request, Response $response, array $args) {
+
+        //Obtener id desde la url
+        $id = $args['id'];
+
+        //Abrir conexion
+        $db = Conexion();
+
+        //Elegir el formato de la respuesta
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);
+
+        //Consulta dql
+        $sql = "SELECT nombre_usuario FROM usuarios WHERE id_usuario = $id";
+
+        //Devolver la fila del resultado
+        $res = $db->GetRow($sql);
+
+        //Responder y cerrar conexion
+        $db->Close();
+
+        //guardar la respuesta en response y darle formato json.
+        $response->getBody()->write(json_encode($res));
+        return $response;
+    });
+
+
+    //Obtener usuarios
+    $app->get('/getAllUsuarios', function (Request $request, Response $response) {
+        //Abrir conexion con la DB
+        $db = Conexion();
+
+        //Elegir el formato de las repuestas devueltas
+        $db->SetFetchMode(ADODB_FETCH_ASSOC);//Respuesta en arreglo asociativo
+        $sql = "SELECT nombre_usuario FROM usuarios";
+
+        //Obtener toda la tabla
+        $res = $db -> GetAll($sql);
+
+        //Responder y cerrar conexion
+        $db->Close();
+
+        //Obtener respuesta en la variable response
+        $response->getBody()->write(json_encode($res));//Aqui se formatea la respuesta a json
+        return $response;
+    });
+
+    
+    //Login
+    $app->post('/login', function (Request $request, Response $response) {
+
+        $db = Conexion();
+
+        $data = $request->getQueryParams();
+
+        $correo = $data['correo'];
+        $password = $data['password'];
+
+        $sql = "SELECT * FROM usuarios WHERE correo = ?";
+        $usuario = $db->GetRow($sql, [$correo]);
+
+        //Validar que el usuario existe
+        if (!$usuario) {
+            $response->getBody()->write('false');
+            return $response->withStatus(400);
+        }
+
+        //Validar la contraseña
+        if ($usuario['password'] != $password) {
+            $response->getBody()->write('false');
+            return $response->withStatus(400);
+        }
+
+        //Login exitoso
+        $response->getBody()->write(json_encode([
+            "mensaje" => "Login Exitoso",
+            "usuario" => [
+                "id_usuario" => $usuario['id_usuario'],
+                "nombre_usuario" => $usuario['nombre_usuario'],
+                "correo" => $usuario['correo'],
+                "rol_id" => $usuario['rol_id']
+            ]
+        ]));
+
+        $db->Close();
         return $response;
     });
 
