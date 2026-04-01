@@ -55,11 +55,11 @@ return function (App $app) {
 
 
         //Modificar en la base de datos
-        $res = $db -> autoExecute("usuarios", $reg, "INSERT");
+        $res = $db->autoExecute("usuarios", $reg, "INSERT");
 
         //Cerrar conexion
-        $db -> Close();
-        $response -> getBody()->write(($res ? 'true' : 'false'));
+        $db->Close();
+        $response->getBody()->write(($res ? 'true' : 'false'));
         return $response;
     });
 
