@@ -1,6 +1,6 @@
 /**
  * Lógica para reportes.php (Dashboard Administrativo)
- */
+ pendiente de incluir tarifas*/
 
 document.addEventListener('DOMContentLoaded', function() {
     
