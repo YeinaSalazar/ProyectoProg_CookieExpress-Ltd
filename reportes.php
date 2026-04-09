@@ -1,162 +1,330 @@
-<?php
-// Configuración de la página
-$page_title = "Reportes y Estadísticas";
-$page_css = "reportes";
-$page_js = "reportes";
+[ /**
+ * Lógica para reportes.php (Dashboard Administrativo)
+ */
 
-// Incluir cabeceras
-include 'shared/head.php';
-include 'shared/header.php';
-?>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Variables globales para instancias de gráficos
+    let chartVolumen, chartRutas;
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-
-<main class="admin-dashboard bg-light py-5">
-    <div class="container-fluid px-4 px-lg-5">
+    // 1. OBTENER DATOS VÍA AJAX
+    function cargarDatosDashboard(filtro) {
         
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4" data-aos="fade-down">
-            <div>
-                <span class="badge bg-dark mb-2"><i class="fa-solid fa-shield-halved me-1"></i> Panel Administrativo</span>
-                <h2 class="font-montserrat fw-bold color-primary-corp mb-0">Reportes Operativos</h2>
-            </div>
-            <div class="mt-3 mt-md-0 d-flex gap-2">
-                <select class="form-select w-auto bg-white shadow-sm border-0" id="filtroMes">
-                    <option value="actual" selected>Mes Actual</option>
-                    <option value="anterior">Mes Anterior</option>
-                    <option value="trimestre">Último Trimestre</option>
-                </select>
-                <button class="btn btn-primary-corp shadow-sm" id="btnActualizar">
-                    <i class="fa-solid fa-rotate-right"></i>
-                </button>
-            </div>
-        </div>
+        // Efecto visual de recarga
+        document.getElementById('btnActualizar').querySelector('i').classList.add('fa-spin');
 
-        <div class="row g-4 mb-4">
-            <div class="col-sm-6 col-xl-3" data-aos="fade-up" data-aos-delay="50">
-                <div class="card kpi-card border-0 shadow-sm p-3">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <p class="text-muted small mb-1 fw-bold">Ingresos Totales</p>
-                            <h3 class="fw-bold text-success mb-0" id="kpi-ingresos">$0.00</h3>
-                        </div>
-                        <div class="kpi-icon bg-success bg-opacity-10 text-success">
-                            <i class="fa-solid fa-sack-dollar"></i>
-                        </div>
-                    </div>
-                    <div class="mt-3 small">
-                        <span class="text-success fw-bold"><i class="fa-solid fa-arrow-trend-up me-1"></i>+12.5%</span> vs mes anterior
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xl-3" data-aos="fade-up" data-aos-delay="100">
-                <div class="card kpi-card border-0 shadow-sm p-3">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <p class="text-muted small mb-1 fw-bold">Paquetes Procesados</p>
-                            <h3 class="fw-bold color-primary-corp mb-0" id="kpi-paquetes">0</h3>
-                        </div>
-                        <div class="kpi-icon bg-primary bg-opacity-10 text-primary">
-                            <i class="fa-solid fa-boxes-stacked"></i>
-                        </div>
-                    </div>
-                    <div class="mt-3 small">
-                        <span class="text-success fw-bold"><i class="fa-solid fa-arrow-trend-up me-1"></i>+5.2%</span> vs mes anterior
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xl-3" data-aos="fade-up" data-aos-delay="150">
-                <div class="card kpi-card border-0 shadow-sm p-3">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <p class="text-muted small mb-1 fw-bold">Tiempo Promedio</p>
-                            <h3 class="fw-bold text-info mb-0" id="kpi-tiempo">0 Días</h3>
-                        </div>
-                        <div class="kpi-icon bg-info bg-opacity-10 text-info">
-                            <i class="fa-solid fa-stopwatch"></i>
-                        </div>
-                    </div>
-                    <div class="mt-3 small">
-                        <span class="text-muted">Desde bodega hasta entrega</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xl-3" data-aos="fade-up" data-aos-delay="200">
-                <div class="card kpi-card border-0 shadow-sm p-3">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <p class="text-muted small mb-1 fw-bold">Envíos Retenidos</p>
-                            <h3 class="fw-bold text-danger mb-0" id="kpi-retenidos">0</h3>
-                        </div>
-                        <div class="kpi-icon bg-danger bg-opacity-10 text-danger">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                        </div>
-                    </div>
-                    <div class="mt-3 small">
-                        <span class="text-danger fw-bold">Requieren acción aduanal</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        // SIMULACIÓN DE LLAMADA AL API (/apiProyecto/public/admin/reportes?filtro=mes)
+        setTimeout(() => {
+            // Mock Data
+            const dataAPI = {
+                kpis: { ingresos: 12450.50, paquetes: 842, tiempo_promedio: 4.5, retenidos: 12 },
+                graficoBarras: {
+                    labels: ['Oct…
+ /**
+ * Lógica REALISTA para reportes.php
+ */
 
-        <div class="row g-4 mb-4">
-            <div class="col-lg-8" data-aos="fade-up" data-aos-delay="250">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
-                        <h6 class="font-montserrat fw-bold">Volumen de Importaciones (Últimos 6 meses)</h6>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="barChart" height="100"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
-                        <h6 class="font-montserrat fw-bold">Distribución por Ruta</h6>
-                    </div>
-                    <div class="card-body d-flex justify-content-center align-items-center">
-                        <canvas id="doughnutChart" height="200"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
+document.addEventListener('DOMContentLoaded', function () {
 
-        <div class="card border-0 shadow-sm" data-aos="fade-up" data-aos-delay="350">
-            <div class="card-header bg-white border-bottom p-3 d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-                <h6 class="font-montserrat fw-bold mb-3 mb-md-0">Detalle de Transacciones Recientes</h6>
-                <div class="d-flex gap-2">
-                    <button id="exportExcel" class="btn btn-sm btn-outline-success"><i class="fa-solid fa-file-excel me-1"></i> Excel</button>
-                    <button id="exportPDF" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-file-pdf me-1"></i> PDF</button>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0" id="tablaReportes">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Tracking</th>
-                                <th>Cliente</th>
-                                <th>Ruta/Zona</th>
-                                <th>Fecha Ingreso</th>
-                                <th>Estado</th>
-                                <th class="text-end">Flete ($)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbodyReportes">
-                            <tr><td colspan="6" class="text-center py-4"><div class="spinner-border text-accent-corp" role="status"></div></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    let chartVolumen, chartRutas;
 
-    </div>
-</main>
+    // ==============================
+    // 🔥 TARIFAS (SIMULANDO BACKEND)
+    // ==============================
+    const tarifas = {
+        base: 5,
+        porKg: 2,
+        porVolumen: 0.003, // cm3
+        destinos: {
+            'San José': 1,
+            'Alajuela': 1.1,
+            'Heredia': 1.05,
+            'Guanacaste': 1.5
+        }
+    };
 
-<?php 
-include 'shared/footer.php';
-include 'shared/scripts.php'; 
-?>
+    // ==============================
+    // 🔥 CALCULO REAL DE TARIFA
+    // ==============================
+    function calcularTarifa(peso, volumen, destino) {
+        const costoPeso = peso * tarifas.porKg;
+        const costoVolumen = volumen * tarifas.porVolumen…
+ /**
+ * Lógica para paquetes.php (Tracking y Gestión)
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Referencias DOM
+    const contenedorPaquetes = document.getElementById('contenedor-paquetes');
+    const inputSearch = document.getElementById('searchSearch');
+    const formFactura = document.getElementById('formSubirFactura');
+
+    // 1. CARGAR PAQUETES VÍA AJAX
+    function cargarPaquetes() {
+        // SIMULACIÓN DE LLAMADA AL API (/apiProyecto/public/paquetes/mis-paquetes)
+        // Aquí usarías $.ajax o fetch con el Token del usuario.
+        
+        setTimeout(() => {
+            const dataFalsa = [
+                {
+                    id: 1,
+                    tracking: "TBA1234567890",
+                    tienda: "Amaz…
+[7:21 PM, 4/8/2026] 👸🏾: /**
+ * Lógica MEJORADA para paquetes.php
+ */
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const contenedorPaquetes = document.getElementById('contenedor-paquetes');
+    const inputSearch = document.getElementById('searchSearch');
+    const formFactura = document.getElementById('formSubirFactura');
+
+    // ==============================
+    // 🔥 TARIFAS (MISMAS QUE REPORTES)
+    // ==============================
+    const tarifas = {
+        base: 5,
+        porKg: 2,
+        porVolumen: 0.003,
+        destinos: {
+            'San José': 1,
+            'Alajuela': 1.1,
+            'Heredia': 1.05,
+            'Guanacaste': 1.5
+        }
+    };
+
+    function calcularTarifa(peso, volumen, destino) {
+        const costoPeso = peso * tarifas.porKg;
+        const costoVolumen = volumen * tarifas.porVolumen;
+        const multiplicador = tarifas.destinos[destino] || 1;
+
+        return (tarifas.base + costoPeso + costoVolumen) * multiplicador;
+    }
+
+    // ==============================
+    // 🔥 SIMULACIÓN BACKEND REAL
+    // ==============================
+    function obtenerPaquetesBackend() {
+
+        let paquetes = [
+            {
+                id: 1,
+                tracking: "CKE-1001",
+                tienda: "Amazon",
+                descripcion: "Laptop Gamer",
+                peso: 3,
+                volumen: 8000,
+                destino: "San José",
+                estado_actual: "Requiere Factura",
+                fecha: "2026-03-20"
+            },
+            {
+                id: 2,
+                tracking: "CKE-1002",
+                tienda: "eBay",
+                descripcion: "Zapatillas Nike",
+                peso: 1,
+                volumen: 3000,
+                destino: "Guanacaste",
+                estado_actual: "En Tránsito",
+                fecha: "2026-03-22"
+            },
+            {
+                id: 3,
+                tracking: "CKE-1003",
+                tienda: "Shein",
+                descripcion: "Ropa Variada",
+                peso: 2,
+                volumen: 4000,
+                destino: "Heredia",
+                estado_actual: "Entregado",
+                fecha: "2026-03-18"
+            }
+        ];
+
+        // 🔥 Calcular flete real
+        paquetes = paquetes.map(p => ({
+            ...p,
+            flete: calcularTarifa(p.peso, p.volumen, p.destino)
+        }));
+
+        return paquetes;
+    }
+
+    // ==============================
+    // 🚀 CARGAR PAQUETES
+    // ==============================
+    function cargarPaquetes() {
+
+        contenedorPaquetes.innerHTML = `
+            <div class="p-5 text-center text-muted">
+                <div class="spinner-border mb-3"></div>
+                <p>Cargando paquetes...</p>
+            </div>
+        `;
+
+        setTimeout(() => {
+            const data = obtenerPaquetesBackend();
+            renderizarPaquetes(data);
+        }, 800);
+    }
+
+    // ==============================
+    // 🎨 RENDER
+    // ==============================
+    function renderizarPaquetes(paquetes) {
+
+        contenedorPaquetes.innerHTML = '';
+
+        if (paquetes.length === 0) {
+            contenedorPaquetes.innerHTML = 'No hay paquetes';
+            return;
+        }
+
+        paquetes.forEach(paq => {
+
+            // 🔥 Badge dinámico
+            let badge = 'secondary';
+            if (paq.estado_actual === "Entregado") badge = 'success';
+            if (paq.estado_actual === "En Tránsito") badge = 'primary';
+            if (paq.estado_actual === "Requiere Factura") badge = 'warning';
+
+            // 🔥 Timeline dinámico
+            const historial = generarHistorial(paq);
+
+            // 🔥 Botón factura
+            let btnFactura = '';
+            if (paq.estado_actual === "Requiere Factura") {
+                btnFactura = `
+                    <button class="btn btn-sm btn-warning w-100 btn-subir-factura"
+                        data-id="${paq.id}"
+                        data-tracking="${paq.tracking}">
+                        Subir Factura
+                    </button>
+                `;
+            }
+
+            const html = `
+                <div class="list-group-item p-4 paquete-item">
+                    <div class="row">
+                        
+                        <div class="col-md-4">
+                            <h6>${paq.tienda} 
+                                <span class="badge bg-${badge}">${paq.estado_actual}</span>
+                            </h6>
+                            <small>Tracking: ${paq.tracking}</small><br>
+                            <small>${paq.descripcion}</small><br>
+                            <small>Peso: ${paq.peso} kg</small><br>
+                            <small>Destino: ${paq.destino}</small><br>
+                            <strong>$${paq.flete.toFixed(2)}</strong>
+                        </div>
+
+                        <div class="col-md-5">
+                            ${historial}
+                        </div>
+
+                        <div class="col-md-3">
+                            ${btnFactura}
+                        </div>
+
+                    </div>
+                </div>
+            `;
+
+            contenedorPaquetes.insertAdjacentHTML('beforeend', html);
+        });
+
+        asignarEventosDinamicos();
+    }
+
+    // ==============================
+    // 🔥 HISTORIAL AUTOMÁTICO
+    // ==============================
+    function generarHistorial(paq) {
+
+        let pasos = [];
+
+        pasos.push("Recibido en Miami");
+
+        if (paq.estado_actual !== "Requiere Factura") {
+            pasos.push("Factura procesada");
+        }
+
+        if (paq.estado_actual === "En Tránsito" || paq.estado_actual === "Entregado") {
+            pasos.push("En camino a Costa Rica");
+        }
+
+        if (paq.estado_actual === "Entregado") {
+            pasos.push("Entregado");
+        }
+
+        let html = '<ul>';
+
+        pasos.forEach(p => {
+            html += <li>${p}</li>;
+        });
+
+        html += '</ul>';
+
+        return html;
+    }
+
+    // ==============================
+    // 🎯 EVENTOS
+    // ==============================
+    function asignarEventosDinamicos() {
+
+        document.querySelectorAll('.btn-subir-factura').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.getElementById('idPaqueteFactura').value = this.dataset.id;
+                document.getElementById('trackingFacturaRef').textContent = this.dataset.tracking;
+
+                new bootstrap.Modal(document.getElementById('modalFactura')).show();
+            });
+        });
+    }
+
+    // ==============================
+    // 📤 SUBIR FACTURA
+    // ==============================
+    if (formFactura) {
+        formFactura.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const btn = this.querySelector('button');
+            btn.innerHTML = 'Subiendo...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.innerHTML = 'Subir';
+                btn.disabled = false;
+
+                bootstrap.Modal.getInstance(document.getElementById('modalFactura')).hide();
+
+                alert('Factura subida correctamente');
+
+                cargarPaquetes();
+            }, 1200);
+        });
+    }
+
+    // ==============================
+    // 🔍 BUSCADOR
+    // ==============================
+    if (inputSearch) {
+        inputSearch.addEventListener('keyup', function () {
+            const term = this.value.toLowerCase();
+
+            document.querySelectorAll('.paquete-item').forEach(item => {
+                item.style.display = item.innerText.toLowerCase().includes(term) ? '' : 'none';
+            });
+        });
+    }
+
+    // INIT
+    cargarPaquetes();
+
+});
