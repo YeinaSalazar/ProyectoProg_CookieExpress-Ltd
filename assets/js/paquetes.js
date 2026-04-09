@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const dataAPI = {
                 kpis: { ingresos: 12450.50, paquetes: 842, tiempo_promedio: 4.5, retenidos: 12 },
                 graficoBarras: {
-                    labels: ['Oct…
+                    labels: ['Oct
  /**
  * Lógica REALISTA para reportes.php
  */
