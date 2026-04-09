@@ -1,6 +1,6 @@
-/**
+[ /**
  * Lógica para reportes.php (Dashboard Administrativo)
- pendiente de incluir tarifas*/
+ */
 
 document.addEventListener('DOMContentLoaded', function() {
     
@@ -19,137 +19,222 @@ document.addEventListener('DOMContentLoaded', function() {
             const dataAPI = {
                 kpis: { ingresos: 12450.50, paquetes: 842, tiempo_promedio: 4.5, retenidos: 12 },
                 graficoBarras: {
-                    labels: ['Octubre', 'Noviembre', 'Diciembre', 'Enero', 'Febrero', 'Marzo'],
-                    data: [450, 600, 1200, 750, 800, 842]
-                },
-                graficoRutas: {
-                    labels: ['San José', 'Guanacaste', 'Heredia', 'Alajuela'],
-                    data: [45, 25, 15, 15] // Porcentajes
-                },
-                tabla: [
-                    { tracking: 'CKE-8492-01', cliente: 'Jose Luis', ruta: 'San José', fecha: '2026-03-27', estado: 'Entregado', flete: 15.50 },
-                    { tracking: 'CKE-9910-02', cliente: 'María C.', ruta: 'Guanacaste', fecha: '2026-03-26', estado: 'En Tránsito', flete: 22.00 },
-                    { tracking: 'CKE-1029-01', cliente: 'Carlos R.', ruta: 'San José', fecha: '2026-03-25', estado: 'Aduanas', flete: 45.00 },
-                    { tracking: 'CKE-3341-05', cliente: 'Ana V.', ruta: 'Heredia', fecha: '2026-03-24', estado: 'Entregado', flete: 12.25 },
-                    { tracking: 'CKE-7721-01', cliente: 'Luis F.', ruta: 'Alajuela', fecha: '2026-03-24', estado: 'Procesando', flete: 8.50 }
-                ]
-            };
+                    labels: ['Oct…
+[/**
+ * Lógica REALISTA para reportes.php
+ */
 
-            renderizarDashboard(dataAPI);
-            document.getElementById('btnActualizar').querySelector('i').classList.remove('fa-spin');
-        }, 800);
+document.addEventListener('DOMContentLoaded', function () {
+
+    let chartVolumen, chartRutas;
+
+    // ==============================
+    // 🔥 TARIFAS (SIMULANDO BACKEND)
+    // ==============================
+    const tarifas = {
+        base: 5,
+        porKg: 2,
+        porVolumen: 0.003, // cm3
+        destinos: {
+            'San José': 1,
+            'Alajuela': 1.1,
+            'Heredia': 1.05,
+            'Guanacaste': 1.5
+        }
+    };
+
+    // ==============================
+    // 🔥 CALCULO REAL DE TARIFA
+    // ==============================
+    function calcularTarifa(peso, volumen, destino) {
+        const costoPeso = peso * tarifas.porKg;
+        const costoVolumen = volumen * tarifas.porVolumen;
+        const multiplicador = tarifas.destinos[destino] || 1;
+
+        return (tarifas.base + costoPeso + costoVolumen) * multiplicador;
     }
 
-    // 2. RENDERIZAR INTERFAZ
-    function renderizarDashboard(data) {
-        // Actualizar KPIs
-        document.getElementById('kpi-ingresos').textContent = '$' + data.kpis.ingresos.toLocaleString('en-US', {minimumFractionDigits: 2});
-        document.getElementById('kpi-paquetes').textContent = data.kpis.paquetes;
-        document.getElementById('kpi-tiempo').textContent = data.kpis.tiempo_promedio + ' Días';
-        document.getElementById('kpi-retenidos').textContent = data.kpis.retenidos;
+    // ==============================
+    // 🔥 SIMULACIÓN BACKEND REAL
+    // ==============================
+    function obtenerDatosBackend(filtro) {
 
-        // Renderizar Gráfico de Barras
+        // Datos base simulados (esto luego viene del backend)
+        let paquetes = [
+            { tracking: 'CKE-001', cliente: 'Jose', destino: 'San José', peso: 2, volumen: 3000, fecha: '2026-03-20', estado: 'Entregado' },
+            { tracking: 'CKE-002', cliente: 'Maria', destino: 'Guanacaste', peso: 5, volumen: 8000, fecha: '2026-03-21', estado: 'En Tránsito' },
+            { tracking: 'CKE-003', cliente: 'Luis', destino: 'Alajuela', peso: 1, volumen: 2000, fecha: '2026-03-22', estado: 'Procesando' },
+            { tracking: 'CKE-004', cliente: 'Ana', destino: 'Heredia', peso: 3, volumen: 5000, fecha: '2026-03-23', estado: 'Entregado' },
+            { tracking: 'CKE-005', cliente: 'Carlos', destino: 'San José', peso: 4, volumen: 6000, fecha: '2026-03-24', estado: 'Aduanas' }
+        ];
+
+        // 🔥 Aplicar cálculo de tarifa
+        paquetes = paquetes.map(p => ({
+            ...p,
+            flete: calcularTarifa(p.peso, p.volumen, p.destino)
+        }));
+
+        // 🔥 KPIs
+        const ingresos = paquetes.reduce((acc, p) => acc + p.flete, 0);
+        const entregados = paquetes.filter(p => p.estado === 'Entregado').length;
+
+        // 🔥 Agrupación para gráfico
+        const conteoPorMes = {};
+        paquetes.forEach(p => {
+            const mes = new Date(p.fecha).toLocaleString('es-ES', { month: 'long' });
+            conteoPorMes[mes] = (conteoPorMes[mes] || 0) + 1;
+        });
+
+        // 🔥 Rutas
+        const rutas = {};
+        paquetes.forEach(p => {
+            rutas[p.destino] = (rutas[p.destino] || 0) + 1;
+        });
+
+        return {
+            kpis: {
+                ingresos: ingresos,
+                paquetes: paquetes.length,
+                tiempo_promedio: 3.5,
+                retenidos: paquetes.filter(p => p.estado === 'Aduanas').length
+            },
+            graficoBarras: {
+                labels: Object.keys(conteoPorMes),
+                data: Object.values(conteoPorMes)
+            },
+            graficoRutas: {
+                labels: Object.keys(rutas),
+                data: Object.values(rutas)
+            },
+            tabla: paquetes
+        };
+    }
+
+    // ==============================
+    // 🔥 CARGA DASHBOARD
+    // ==============================
+    function cargarDatosDashboard(filtro) {
+
+        document.getElementById('btnActualizar')
+            .querySelector('i')
+            .classList.add('fa-spin');
+
+        setTimeout(() => {
+            const data = obtenerDatosBackend(filtro);
+            renderizarDashboard(data);
+
+            document.getElementById('btnActualizar')
+                .querySelector('i')
+                .classList.remove('fa-spin');
+        }, 500);
+    }
+
+    // ==============================
+    // 🎨 RENDER
+    // ==============================
+    function renderizarDashboard(data) {
+
+        // KPIs
+        document.getElementById('kpi-ingresos').textContent =
+            '$' + data.kpis.ingresos.toFixed(2);
+
+        document.getElementById('kpi-paquetes').textContent =
+            data.kpis.paquetes;
+
+        document.getElementById('kpi-tiempo').textContent =
+            data.kpis.tiempo_promedio + ' días';
+
+        document.getElementById('kpi-retenidos').textContent =
+            data.kpis.retenidos;
+
+        // 🔥 GRAFICO BARRAS
         const ctxBar = document.getElementById('barChart').getContext('2d');
         if (chartVolumen) chartVolumen.destroy();
+
         chartVolumen = new Chart(ctxBar, {
             type: 'bar',
             data: {
                 labels: data.graficoBarras.labels,
                 datasets: [{
-                    label: 'Paquetes Procesados',
-                    data: data.graficoBarras.data,
-                    backgroundColor: '#0A2540', // primary-corp
-                    borderRadius: 4
+                    data: data.graficoBarras.data
                 }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true } }
             }
         });
 
-        // Renderizar Gráfico de Anillo (Doughnut)
-        const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+        // 🔥 GRAFICO DONUT
+        const ctxDonut = document.getElementById('doughnutChart').getContext('2d');
         if (chartRutas) chartRutas.destroy();
-        chartRutas = new Chart(ctxDoughnut, {
+
+        chartRutas = new Chart(ctxDonut, {
             type: 'doughnut',
             data: {
                 labels: data.graficoRutas.labels,
                 datasets: [{
-                    data: data.graficoRutas.data,
-                    backgroundColor: ['#0A2540', '#FF6B00', '#17a2b8', '#6c757d'],
-                    borderWidth: 0
+                    data: data.graficoRutas.data
                 }]
-            },
-            options: {
-                responsive: true,
-                cutout: '70%',
-                plugins: { legend: { position: 'bottom' } }
             }
         });
 
-        // Renderizar Tabla
+        // 🔥 TABLA
         const tbody = document.getElementById('tbodyReportes');
         tbody.innerHTML = '';
-        data.tabla.forEach(row => {
-            // Asignar color según estado
-            let badgeColor = 'bg-secondary';
-            if(row.estado === 'Entregado') badgeColor = 'bg-success';
-            if(row.estado === 'En Tránsito') badgeColor = 'bg-primary';
-            if(row.estado === 'Aduanas') badgeColor = 'bg-warning text-dark';
 
-            const tr = `
+        data.tabla.forEach(p => {
+
+            let color = 'secondary';
+            if (p.estado === 'Entregado') color = 'success';
+            if (p.estado === 'En Tránsito') color = 'primary';
+            if (p.estado === 'Aduanas') color = 'warning';
+
+            const fila = `
                 <tr>
-                    <td class="fw-bold text-dark">${row.tracking}</td>
-                    <td>${row.cliente}</td>
-                    <td>${row.ruta}</td>
-                    <td>${row.fecha}</td>
-                    <td><span class="badge ${badgeColor}">${row.estado}</span></td>
-                    <td class="text-end fw-bold">$${row.flete.toFixed(2)}</td>
+                    <td>${p.tracking}</td>
+                    <td>${p.cliente}</td>
+                    <td>${p.destino}</td>
+                    <td>${p.fecha}</td>
+                    <td><span class="badge bg-${color}">${p.estado}</span></td>
+                    <td>$${p.flete.toFixed(2)}</td>
                 </tr>
             `;
-            tbody.insertAdjacentHTML('beforeend', tr);
+
+            tbody.insertAdjacentHTML('beforeend', fila);
         });
     }
 
-    // 3. FUNCIONES DE EXPORTACIÓN
-    // Exportar a Excel (Usando SheetJS)
-    document.getElementById('exportExcel').addEventListener('click', function() {
+    // ==============================
+    // 📤 EXPORTACIONES
+    // ==============================
+    document.getElementById('exportExcel').addEventListener('click', function () {
         const tabla = document.getElementById('tablaReportes');
-        const wb = XLSX.utils.table_to_book(tabla, {sheet: "Reporte"});
-        XLSX.writeFile(wb, "CookieExpress_Reporte.xlsx");
+        const wb = XLSX.utils.table_to_book(tabla, { sheet: "Reporte" });
+        XLSX.writeFile(wb, "Reporte.xlsx");
     });
 
-    // Exportar a PDF (Usando jsPDF + AutoTable)
-    document.getElementById('exportPDF').addEventListener('click', function() {
+    document.getElementById('exportPDF').addEventListener('click', function () {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        
-        doc.setFontSize(18);
-        doc.text("Reporte de Transacciones - CookieExpress", 14, 22);
-        
+
+        doc.text("Reporte de Paquetes", 14, 20);
+
         doc.autoTable({
-            html: '#tablaReportes',
-            startY: 30,
-            theme: 'grid',
-            styles: { fontSize: 9 },
-            headStyles: { fillColor: [10, 37, 64] } // primary-corp color
+            html: '#tablaReportes'
         });
-        
-        doc.save('CookieExpress_Reporte.pdf');
+
+        doc.save('Reporte.pdf');
     });
 
-    // 4. LISTENERS DE CONTROLES
+    // ==============================
+    // 🎛️ EVENTOS
+    // ==============================
     document.getElementById('btnActualizar').addEventListener('click', () => {
-        cargarDatosDashboard(document.getElementById('filtroMes').value);
+        cargarDatosDashboard();
     });
 
     document.getElementById('filtroMes').addEventListener('change', (e) => {
         cargarDatosDashboard(e.target.value);
     });
 
-    // Inicializar al cargar
-    cargarDatosDashboard('actual');
+    // INIT
+    cargarDatosDashboard();
+
 });
