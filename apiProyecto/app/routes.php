@@ -12,6 +12,24 @@ use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 return function (App $app) {
+
+
+    //Funcion helper para devolver respuestas en JSON y reutilizarla en todos los endpoints
+        $respond = function (Response $response, bool $ok, $data = null, $error = null, int $status = 200): Response {
+            $payload = ['ok' => $ok];
+            if($ok) {
+                $payload['data'] = $data;
+            } 
+            else {
+                $payload['error'] = $error;
+            }
+
+            $response->getBody()->write(json_encode($payload));
+            return $response->withHeader('Content-Type', 'application/json')
+            ->withStatus($status);
+        };
+
+
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
         // CORS Pre-Flight OPTIONS Request Handler
         return $response;
@@ -21,8 +39,8 @@ return function (App $app) {
     //CRUD USUARIOS
 
 
-    //Crear usuario
-    $app->post('/crearUsuario', function (Request $request, Response $response) {
+    //Crear usuario solo para uso del admin
+    $app->post('/crearUsuario', function (Request $request, Response $response) use ($respond) {
         //Abrir conexion
         $db = Conexion();
 
@@ -36,14 +54,18 @@ return function (App $app) {
             empty($datos['password']) ||
             empty($datos['rol_id'])
         ) {
-            $response->getBody()->write('false');
-            return $response->withStatus(400);
+            return $respond($response,false,null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'Campos obligatorios restantes'
+            ], 400);
         }
 
         //Validar formato de email y rol (int)
         if (!filter_var($datos['correo'], FILTER_VALIDATE_EMAIL)) {
-            $response->getBody()->write('false');
-            return $response->withStatus(400);
+            return $respond($response, false, null, [
+                'codigo' => 'Validacion',
+                'mensaje' => 'El formato del correo es incorrecto'
+            ], 400);
         }
         $rolId = (int)$datos['rol_id'];
 
@@ -61,21 +83,32 @@ return function (App $app) {
 
         //Cerrar conexion
         $db->Close();
-        $response->getBody()->write(($res ? 'true' : 'false'));
-        return $response;
+
+        //Verifica que la respuesta no este vacia
+        if (!$res) {
+            return $respond($response, false, null, [
+                'codigo' => 'DB_ERROR',
+                'mensaje' => 'No se pudo crear el usuario'
+            ], 500);
+        }
+
+        return $respond($response, true, [
+            'mensaje' => 'Usuario creado'
+        ], null, 201);
     });
 
 
-    //Actualizar Datos de usuario
-    $app->put('/actualizarUsuario', function (Request $request, Response $response) {
-        $db = Conexion();
+    //Actualizar Datos de Usuario
+    $app->put('/actualizarUsuario', function (Request $request, Response $response) use ($respond) {
 
         $datos = $request->getQueryParams();
 
         //Definir el identificador obligatorio del usuario
         if (empty($datos['id_usuario'])) {
-            $response->getBody()->write('false');
-            return $response->withStatus(400);
+            return $respond($response, false, null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'Id de usuario incorrecto'
+            ], 400);
         }
         $id = (int)$datos['id_usuario'];
 
@@ -91,58 +124,95 @@ return function (App $app) {
 
         //Validar al menos que haya 1 campo a actualizar
         if (count($reg) === 0) {
-            $response->getBody()->write('false');
-            return $response->withStatus(400);
+            return $respond($response, false, null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'No hay ningun campo a actualizar'
+            ], 400);
         }
+
+        //Abrir conexion despues de construir y validar reg que es el arreglo de datos a actualizar
+        $db = Conexion();
 
         //Ejecutar la actualizacion en la BD
         $res = $db->autoExecute("usuarios", $reg, "UPDATE", "id_usuario = $id");
 
+        
+        //Validar si la respuesta es correcta
+        if(!$res) {
+            return $respond($response, false, null, [
+                'codigo' => 'DB_ERROR',
+                'mensaje' => 'No se pudieron actualizar los datos'
+            ], 500);
+        }
+
         //Responder y cerrar conexion
         $db->Close();
-        $response->getBody()->write($res ? 'true' : 'false');
-        return $response;
+        return $respond($response, true, [
+            'mensaje' => 'Datos actualizados'
+        ], null, 200);
     });
 
 
     //Eliminar usuario
-    $app->delete('/deleteUsuario/{id}', function (Request $request, Response $response, array $args) {
+    $app->delete('/deleteUsuario/{id}', function (Request $request, Response $response, array $args) use ($respond){
         //Obtener id desde la url
         $id = (int) $args['id'];
 
-        $db = Conexion();
-
         //Validar que el ID sea valido
         if ($id <= 0) {
-            $response->getBody()->write('false');
-            return $response->withStatus(400);
+            return $respond($response, false, null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'Numero de ID invalido'
+            ], 400);
         }
+
+        //Abrir la conexion despues de validar que el id sea valido
+        $db = Conexion();
 
         //Verificar que el registro existe antes de borrar
         $user = $db->GetRow("SELECT id_usuario FROM usuarios WHERE id_usuario = $id");
 
         if (!$user) {
-            $response->getBody()->write('false');
-            return $response->withStatus(400);
+            $db->Close();
+            return $respond($response, false, null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'El usuario a borrar no existe'
+            ], 400);
         }
         else {
             $sql = "DELETE FROM usuarios WHERE id_usuario = $id";
             $res = $db->Execute($sql);
         }
 
-        $db->Close();
+        //Validar si la respuesta es correcta
+        if(!$res) {
+            return $respond($response, false, null, [
+                'codigo' => 'DB_ERROR',
+                'mensaje' => 'No se pudo eliminar el usuario'
+            ], 500);
+        }
 
-    
-        $response->getBody()->write($res ? 'true' : 'false');
-        return $response;
+        //Responder y cerrar conexion
+        $db->Close();
+        return $respond($response, true, [
+            'mensaje' => 'Usuario borrado'
+        ], null, 200);
     });
 
 
     //Obtener usuario
-    $app->get('/getbyIdUsuario/{id}', function (Request $request, Response $response, array $args) {
+    $app->get('/getbyIdUsuario/{id}', function (Request $request, Response $response, array $args) use ($respond) {
 
         //Obtener id desde la url
-        $id = $args['id'];
+        $id = (int) $args['id'];
+
+        //Validar el id
+        if($id <= 0) {
+            return $respond($response, false, null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'ID inválido'
+            ], 400);
+        }
 
         //Abrir conexion
         $db = Conexion();
@@ -150,45 +220,60 @@ return function (App $app) {
         //Elegir el formato de la respuesta
         $db->SetFetchMode(ADODB_FETCH_ASSOC);
 
-        //Consulta dql
-        $sql = "SELECT nombre_usuario FROM usuarios WHERE id_usuario = $id";
+        //---------------------------------------------------------------------------------
+        //Consulta dql, pendiente traer el numero de casillero
+        $sql = "SELECT id_usuario, nombre_usuario, correo, rol_id FROM usuarios WHERE id_usuario = $id";
 
         //Devolver la fila del resultado
         $res = $db->GetRow($sql);
 
+        //guardar la respuesta en response y darle formato json.
+        if(!$res) {
+            $db->Close();
+            return $respond($response, false, null, [
+                'codigo' => 'BD_ERROR',
+                'mensaje' => 'Usuario no encontrado'
+            ], 404);
+        }
+
         //Responder y cerrar conexion
         $db->Close();
-
-        //guardar la respuesta en response y darle formato json.
-        $response->getBody()->write(json_encode($res));
-        return $response;
+        return $respond($response, true, $res, null, 200);
     });
 
 
     //Obtener usuarios
-    $app->get('/getAllUsuarios', function (Request $request, Response $response) {
+    $app->get('/getAllUsuarios', function (Request $request, Response $response) use ($respond) {
         //Abrir conexion con la DB
         $db = Conexion();
 
         //Elegir el formato de las repuestas devueltas
         $db->SetFetchMode(ADODB_FETCH_ASSOC);//Respuesta en arreglo asociativo
-        $sql = "SELECT nombre_usuario FROM usuarios";
+        $sql = "SELECT id_usuario, nombre_usuario, correo, rol_id FROM usuarios";
 
         //Obtener toda la tabla
         $res = $db -> GetAll($sql);
+
+        if($res === false) {
+            $db->Close();
+            return $respond($response, false, null, [
+                'codigo' => 'BD_ERROR',
+                'mensaje' => 'Usuarios no encontrados'
+            ],500);
+        }
 
         //Responder y cerrar conexion
         $db->Close();
 
         //Obtener respuesta en la variable response
-        $response->getBody()->write(json_encode($res));//Aqui se formatea la respuesta a json
-        return $response;
+        return $respond($response, true, $res, null, 200);
     });
 
     
     //Login
-    $app->post('/login', function (Request $request, Response $response) {
+    $app->post('/login', function (Request $request, Response $response) use ($respond) {
 
+        //Abrir la conexion
         $db = Conexion();
 
         $data = $request->getQueryParams();
@@ -196,34 +281,45 @@ return function (App $app) {
         $correo = $data['correo'];
         $password = $data['password'];
 
+        if (empty($data['correo']) || empty($data['password'])) {
+            return $respond($response, false, null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'Correo y contraseña son obligatorios'
+            ], 400);
+        }
+
         $sql = "SELECT * FROM usuarios WHERE correo = ?";
         $usuario = $db->GetRow($sql, [$correo]);
 
         //Validar que el usuario existe
         if (!$usuario) {
-            $response->getBody()->write('false');
-            return $response->withStatus(400);
+            $db->Close();
+            return $respond($response, false, null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'El usuario no existe'
+            ], 400);
         }
 
         //Validar la contraseña
         if ($usuario['password'] != $password) {
-            $response->getBody()->write('false');
-            return $response->withStatus(400);
+            $db->Close();
+            return $respond($response, false, null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'Credenciales inválidas'
+            ], 400);
         }
 
         //Login exitoso
-        $response->getBody()->write(json_encode([
+        $db->Close();
+        return $respond($response, true, [
             "mensaje" => "Login Exitoso",
             "usuario" => [
                 "id_usuario" => $usuario['id_usuario'],
                 "nombre_usuario" => $usuario['nombre_usuario'],
                 "correo" => $usuario['correo'],
                 "rol_id" => $usuario['rol_id']
-            ]
-        ]));
-
-        $db->Close();
-        return $response;
+                ]
+        ], null, 200); 
     });
 
 
