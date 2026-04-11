@@ -29,6 +29,22 @@ return function (App $app) {
             ->withStatus($status);
         };
 
+    //Funcion helper generadora de casilleros
+    $generarCasillero = function ($db) {
+        for ($i = 0; $i < 10; $i++) {
+            $casillero = 'CKE-' . random_int(1000,9999);//4 digitos
+            $existe = $db->GetRow(
+                "SELECT id_usuario FROM usuarios WHERE casillero = ?",
+                [$casillero]
+            );
+            if (!$existe) {
+                return $casillero;
+            }
+        }
+        return null;// Si no pudo generar casillero retorna null
+    };
+
+
 
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
         // CORS Pre-Flight OPTIONS Request Handler
@@ -38,11 +54,8 @@ return function (App $app) {
 
     //CRUD USUARIOS
 
-
     //Crear usuario solo para uso del admin
-    $app->post('/crearUsuario', function (Request $request, Response $response) use ($respond) {
-        //Abrir conexion
-        $db = Conexion();
+    $app->post('/crearUsuario', function (Request $request, Response $response) use ($respond, $generarCasillero) {
 
         //Crear arreglo del registro a insertar
         $datos = $request->getQueryParams();
@@ -56,18 +69,35 @@ return function (App $app) {
         ) {
             return $respond($response,false,null, [
                 'codigo' => 'VALIDACION',
-                'mensaje' => 'Campos obligatorios restantes'
+                'mensaje' => 'Campos obligatorios faltantes'
             ], 400);
         }
 
         //Validar formato de email y rol (int)
         if (!filter_var($datos['correo'], FILTER_VALIDATE_EMAIL)) {
             return $respond($response, false, null, [
-                'codigo' => 'Validacion',
+                'codigo' => 'VALIDACION',
                 'mensaje' => 'El formato del correo es incorrecto'
             ], 400);
         }
         $rolId = (int)$datos['rol_id'];
+
+        //Abrir conexion luego de verificar la entrada de datos
+        $db = Conexion();
+
+        //Generar casillero solo si el rol es 3, cliente
+        $casillero = null;
+
+        if ($rolId === 3) {
+            $casillero = $generarCasillero($db);
+            if (!$casillero) {
+                $db->Close();
+                return $respond($response, false, null, [
+                    'codigo' => 'CASILLERO',
+                    'mensaje' => 'No se pudo generar el casillero'
+                ], 500);
+            }
+        }
 
         //Construir el arreglo a insertar
         $reg = [
@@ -76,7 +106,10 @@ return function (App $app) {
             'password' => $datos['password'],
             'rol_id' => $rolId
         ];
-
+        //Se agrega el casillero solo si el rol es cliente, sino no se hace y por defecto la bd lo deja null.
+        if ($casillero !== null) {
+            $reg['casillero'] = $casillero;
+        }
 
         //Modificar en la base de datos
         $res = $db->autoExecute("usuarios", $reg, "INSERT");
@@ -139,6 +172,7 @@ return function (App $app) {
         
         //Validar si la respuesta es correcta
         if(!$res) {
+            $db->Close();
             return $respond($response, false, null, [
                 'codigo' => 'DB_ERROR',
                 'mensaje' => 'No se pudieron actualizar los datos'
@@ -186,6 +220,7 @@ return function (App $app) {
 
         //Validar si la respuesta es correcta
         if(!$res) {
+            $db->Close();
             return $respond($response, false, null, [
                 'codigo' => 'DB_ERROR',
                 'mensaje' => 'No se pudo eliminar el usuario'
@@ -222,7 +257,7 @@ return function (App $app) {
 
         //---------------------------------------------------------------------------------
         //Consulta dql, pendiente traer el numero de casillero
-        $sql = "SELECT id_usuario, nombre_usuario, correo, rol_id FROM usuarios WHERE id_usuario = $id";
+        $sql = "SELECT id_usuario, nombre_usuario, correo, rol_id, casillero FROM usuarios WHERE id_usuario = $id";
 
         //Devolver la fila del resultado
         $res = $db->GetRow($sql);
@@ -231,7 +266,7 @@ return function (App $app) {
         if(!$res) {
             $db->Close();
             return $respond($response, false, null, [
-                'codigo' => 'BD_ERROR',
+                'codigo' => 'NO_ENCONTRADO',
                 'mensaje' => 'Usuario no encontrado'
             ], 404);
         }
@@ -249,7 +284,7 @@ return function (App $app) {
 
         //Elegir el formato de las repuestas devueltas
         $db->SetFetchMode(ADODB_FETCH_ASSOC);//Respuesta en arreglo asociativo
-        $sql = "SELECT id_usuario, nombre_usuario, correo, rol_id FROM usuarios";
+        $sql = "SELECT id_usuario, nombre_usuario, correo, rol_id, casillero FROM usuarios";
 
         //Obtener toda la tabla
         $res = $db -> GetAll($sql);
@@ -257,7 +292,7 @@ return function (App $app) {
         if($res === false) {
             $db->Close();
             return $respond($response, false, null, [
-                'codigo' => 'BD_ERROR',
+                'codigo' => 'DB_ERROR',
                 'mensaje' => 'Usuarios no encontrados'
             ],500);
         }
@@ -273,9 +308,6 @@ return function (App $app) {
     //Login
     $app->post('/login', function (Request $request, Response $response) use ($respond) {
 
-        //Abrir la conexion
-        $db = Conexion();
-
         $data = $request->getQueryParams();
 
         $correo = $data['correo'];
@@ -288,7 +320,11 @@ return function (App $app) {
             ], 400);
         }
 
-        $sql = "SELECT * FROM usuarios WHERE correo = ?";
+        //Abrir la conexion luego de validar los datos de entrada
+        $db = Conexion();
+
+        //Buscar usuario
+        $sql = "SELECT id_usuario, nombre_usuario, correo, rol_id, password, casillero FROM usuarios WHERE correo = ?";
         $usuario = $db->GetRow($sql, [$correo]);
 
         //Validar que el usuario existe
@@ -296,7 +332,7 @@ return function (App $app) {
             $db->Close();
             return $respond($response, false, null, [
                 'codigo' => 'VALIDACION',
-                'mensaje' => 'El usuario no existe'
+                'mensaje' => 'Usuario no encontrado'
             ], 400);
         }
 
@@ -317,11 +353,149 @@ return function (App $app) {
                 "id_usuario" => $usuario['id_usuario'],
                 "nombre_usuario" => $usuario['nombre_usuario'],
                 "correo" => $usuario['correo'],
-                "rol_id" => $usuario['rol_id']
+                "rol_id" => $usuario['rol_id'],
+                'casillero' => $usuario['casillero']
                 ]
         ], null, 200); 
     });
 
+    //Registro para los clientes
+    $app->post('/registroCliente', function (Request $request, Response $response) use ($respond, $generarCasillero) {
+        //Leer datos pendiente pasarlo a JSon (array) $request->getParsedBody();
+        $data = $request->getQueryParams();
+
+        //Validar los datos obligatorios
+        if (empty($data['nombre_usuario']) || empty($data['correo']) || empty($data['password'])) {
+            return $respond($response, false, null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'Campos obligatorios faltantes'
+            ], 400);
+        }
+
+        //Validar formato del correo
+        if (!filter_var($data['correo'], FILTER_VALIDATE_EMAIL )) {
+            return $respond($response, false, null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'Correo inválido'
+            ], 400);
+        }
+
+        //Luego de verificiones de datos de entrada abrir conexion
+        $db = Conexion();
+
+        //Verificar si el correo que se registra ya existe
+        $existe = $db->GetRow("SELECT id_usuario FROM usuarios WHERE correo = ?", [$data['correo']]);
+
+        //Si ya existe da error con codigo de duplicado
+        if ($existe) {
+            $db->Close();
+            return $respond($response, false, null, [
+                'codigo' => 'DUPLICADO',
+                'mensaje' => 'El correo ya está registrado'
+            ], 409);
+        }
+
+        //Generar y guardar casillero
+        $casillero = $generarCasillero($db);
+        if (!$casillero) {
+            $db->Close();
+            return $respond($response, false, null, [
+                'codigo' => 'CASILLERO',
+                'mensaje' => 'No se pudo crear el casillero'
+            ], 500);
+        }
+
+        //Construir el registro del rol cliente, aun no hay una columna para casillero asi que no se incluye
+        $reg = [
+            'nombre_usuario' => $data['nombre_usuario'],
+            'correo' => $data['correo'],
+            'password' => $data['password'],
+            'rol_id' => 3,
+            'casillero' => $casillero
+        ];
+
+        //Insert de los datos a la tabla usuarios
+        $res = $db->autoExecute("usuarios",$reg,'INSERT');
+        
+        //Cerrar conexion
+        $db->Close();
+
+        //Verificar si se logra registrar el cliente en la bd
+        if (!$res) {
+            return $respond($response, false, null, [
+                'codigo' => 'DB_ERROR',
+                'mensaje' => 'No se pudo registrar el cliente'
+            ], 500);
+        }
+
+        //Respuesta de registro exitoso
+        return $respond($response, true, [
+            'mensaje' => 'Cliente registrado',
+            'usuario' => $data['nombre_usuario'],
+            'casillero' => $casillero
+        ], null, 201);
+    });
+
+    $app->post('/recuperarPassword', function (Request $request, Response $response) use ($respond) {
+        //Leer datos
+        $data = $request->getQueryParams();
+
+        //Validar que se introduce un correo
+        if (empty($data['correo'])) {
+            return $respond($response, false, null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'El correo es obligatorio'
+            ], 400);
+        }
+
+        //Validar formato correcto de correo
+        if(!filter_var($data['correo'], FILTER_VALIDATE_EMAIL)) {
+            return $respond($response, false, null, [
+                'codigo' => 'VALIDACION',
+                'mensaje' => 'Formato de correo inválido'
+            ], 400);
+        }
+
+        //Abrir conexion
+        $db = Conexion();
+
+        //Verificar usuario
+        $usuario = $db->GetRow("SELECT id_usuario FROM usuarios WHERE correo = ?", [$data['correo']]);
+
+        //Respuesta de la verificacion de usuario
+        if (!$usuario) {
+            $db->Close();
+            //Mensaje afirmativo por seguridad
+            return $respond($response, true, [
+            'mensaje' => 'Si el correo existe, se enviará una nueva contraseña'
+            ], null, 200);
+        }
+
+        //Generar contraseña aleatoria de 8 caracteres
+        $nuevaPass = substr(bin2hex(random_bytes(4)), 0, 8);
+
+        //Guardar nueva contraseña
+        $res = $db->autoExecute("usuarios", ['password' => $nuevaPass], "UPDATE", "id_usuario =" . (int)$usuario['id_usuario']);
+
+        //Si guardar la contraseña falla
+        if (!$res) {
+            $db->Close();
+            return $respond($response, false, null, [
+                'codigo' => 'DB_ERROR',
+                'mensaje' => 'No se pudo actualizar la contraseña'
+            ], 500);
+        }
+
+        // TODO: enviar correo real con nueva contraseña
+        // mail($data['correo'], "Recuperación de contraseña", "Tu nueva contraseña es: $nuevaPass");
+
+
+        //Respuesta de exito
+        $db->Close();
+        return $respond($response, true, [
+            'mensaje' => 'Si el correo existe, se enviará una nueva contraseña'
+        ], null, 200);
+    });
 
     $app->get('/test', function (Request $request, Response $response) {
         $response->getBody()->write('API funcionando');
