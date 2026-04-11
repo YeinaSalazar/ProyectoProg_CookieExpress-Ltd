@@ -14,7 +14,8 @@
 ```json
 { "ok": true, "data": {} }
 
-Error: 
+Error:
+```json 
 { "ok": false, "error": { "code": "ERROR_CODE", "message": "Mensaje" } }
 
 
