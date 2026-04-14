@@ -1,24 +1,105 @@
-.tracking-search-card {
-    padding: 1.4rem;
+/* =========================================
+   DASHBOARD PAQUETES
+========================================= */
+
+.dashboard-wrapper {
+    min-height: 80vh;
 }
 
-.tracking-note {
-    color: var(--muted);
-    font-size: 0.9rem;
+/* Paquetes */
+.paquete-item {
+    transition: background-color 0.2s ease;
 }
 
-.tracking-meta li {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.85rem 0;
-    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+.paquete-item:hover {
+    background-color: #f8f9fa;
 }
 
-.tracking-meta li:last-child {
-    border-bottom: 0;
+/* Imagen */
+.paquete-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.tracking-meta span {
-    color: var(--muted);
+.paquete-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Timeline */
+.tracking-timeline {
+    position: relative;
+    padding-left: 30px;
+    margin: 20px 0 10px;
+}
+
+.tracking-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 7px;
+    width: 2px;
+    height: 100%;
+    background-color: #e9ecef;
+}
+
+.timeline-step {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.timeline-step:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-step::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ced4da;
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px #ced4da;
+}
+
+/* Estados */
+.timeline-step.completed::before {
+    background-color: var(--primary-color);
+    box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.timeline-step.current::before {
+    background-color: var(--accent-color);
+    animation: pulse 2s infinite;
+}
+
+/* Animación */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(255, 107, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 107, 0, 0); }
+}
+
+/* Badges */
+.badge-soft-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #856404;
+}
+
+.badge-soft-primary {
+    background-color: rgba(10, 37, 64, 0.1);
+    color: var(--primary-color);
+}
+
+.badge-soft-success {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #0f5132;
 }
