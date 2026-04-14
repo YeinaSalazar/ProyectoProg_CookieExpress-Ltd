@@ -1,36 +1,49 @@
-<footer class="bg-primary-corp text-white pt-5 pb-3 mt-auto">
+<footer class="site-footer">
     <div class="container">
-        <div class="row mb-4">
-            <div class="col-lg-4 col-md-6 mb-4">
-                <h5 class="font-montserrat fw-bold mb-3"><i class="fa-solid fa-box-fast text-accent-corp me-2"></i>CookieExpress</h5>
-                <p class="text-white-50 small">Soluciones de logística e importación internacional. Llevamos tus compras y paquetes directo a tus manos con la mayor rapidez y seguridad.</p>
+        <div class="row g-4 align-items-start">
+            <div class="col-lg-4">
+                <a class="brand-mark brand-mark-footer mb-3" href="index.php">
+                    <span class="brand-icon"><i class="bi bi-box-seam"></i></span>
+                    <span>
+                        Cookie<span>Express</span>
+                        <small>Trazabilidad que inspira confianza</small>
+                    </span>
+                </a>
+                <p class="footer-copy">
+                    Plataforma universitaria de gestion de envios internacionales, pensada para operar con claridad, eficiencia y una experiencia digital de nivel corporativo.
+                </p>
             </div>
-            <div class="col-lg-2 col-md-6 mb-4">
-                <h6 class="font-montserrat fw-bold mb-3">Accesos</h6>
-                <ul class="list-unstyled small">
-                    <li class="mb-2"><a href="index.php" class="text-white-50 text-decoration-none">Inicio</a></li>
-                    <li class="mb-2"><a href="paquetes.php" class="text-white-50 text-decoration-none">Rastrear Paquete</a></li>
-                    <li class="mb-2"><a href="mapa.php" class="text-white-50 text-decoration-none">Nuestras Oficinas</a></li>
+            <div class="col-sm-6 col-lg-2">
+                <h6>Navegacion</h6>
+                <ul class="footer-links">
+                    <li><a href="index.php">Inicio</a></li>
+                    <li><a href="paquetes.php">Rastreo</a></li>
+                    <li><a href="mapa.php">Sucursales</a></li>
+                    <li><a href="contacto.php">Contacto</a></li>
                 </ul>
             </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h6 class="font-montserrat fw-bold mb-3">Contacto</h6>
-                <ul class="list-unstyled small text-white-50">
-                    <li class="mb-2"><i class="fa-solid fa-location-dot me-2"></i> San José, Costa Rica</li>
-                    <li class="mb-2"><i class="fa-solid fa-envelope me-2"></i> soporte@cookieexpress.com</li>
-                    <li class="mb-2"><i class="fa-solid fa-phone me-2"></i> +506 8000-0000</li>
+            <div class="col-sm-6 col-lg-3">
+                <h6>Servicios</h6>
+                <ul class="footer-links">
+                    <li><a href="dashboard-cliente.php">Panel del cliente</a></li>
+                    <li><a href="dashboard-logistica.php">Operacion logistica</a></li>
+                    <li><a href="dashboard-admin.php">Analitica administrativa</a></li>
+                    <li><a href="reportes.php">Reportes ejecutivos</a></li>
                 </ul>
             </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h6 class="font-montserrat fw-bold mb-3">Síguenos</h6>
-                <a href="#" class="text-white me-3 fs-5"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#" class="text-white me-3 fs-5"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="text-white fs-5"><i class="fa-brands fa-linkedin"></i></a>
+            <div class="col-lg-3">
+                <h6>Contacto</h6>
+                <ul class="footer-contact">
+                    <li><i class="bi bi-geo-alt"></i> San Jose, Costa Rica</li>
+                    <li><i class="bi bi-envelope"></i> soporte@cookieexpress.com</li>
+                    <li><i class="bi bi-telephone"></i> +506 2255-1840</li>
+                    <li><i class="bi bi-clock"></i> Lun a Sab, 8:00 a.m. - 6:00 p.m.</li>
+                </ul>
             </div>
         </div>
-        <hr class="border-secondary">
-        <div class="text-center small text-white-50">
-            &copy; <?php echo date('Y'); ?> CookieExpress Ltda. Todos los derechos reservados.
+        <div class="footer-bottom">
+            <span>&copy; <?php echo date('Y'); ?> CookieExpress Ltda.</span>
+            <span>Base front end lista para integracion con PHP + Slim + AJAX.</span>
         </div>
     </div>
 </footer>

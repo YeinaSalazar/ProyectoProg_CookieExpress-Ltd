@@ -1,0 +1,43 @@
+.map-stage {
+    position: relative;
+    min-height: 380px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.map-grid {
+    position: relative;
+    min-height: 380px;
+    border-radius: inherit;
+    background:
+        linear-gradient(rgba(12, 35, 64, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(12, 35, 64, 0.06) 1px, transparent 1px),
+        radial-gradient(circle at 30% 40%, rgba(255, 122, 26, 0.18), transparent 20%),
+        linear-gradient(135deg, #edf4fd 0%, #dfeafb 100%);
+    background-size: 32px 32px, 32px 32px, auto, auto;
+}
+
+.branch-dot {
+    position: absolute;
+    padding: 0.55rem 0.9rem;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(12, 35, 64, 0.12);
+    color: var(--brand);
+    font-weight: 800;
+}
+
+.branch-dot.active {
+    background: var(--accent);
+    color: #fff;
+}
+
+.branch-card h2 {
+    font-size: 1.15rem;
+}
+
+.branch-card span {
+    display: block;
+    margin-top: 1rem;
+    color: var(--muted);
+}

@@ -1,31 +1,42 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary-corp sticky-top shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold font-montserrat" href="index.php">
-            <i class="fa-solid fa-box-fast text-accent-corp me-2"></i>Cookie<span class="text-accent-corp">Express</span>
-        </a>
-        
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="paquetes.php">Rastreo</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contacto.php">Contacto</a>
-                </li>
-                <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                    <a class="btn btn-outline-light btn-sm me-2" href="login.php">Iniciar Sesión</a>
-                </li>
-                <li class="nav-item mt-2 mt-lg-0">
-                    <a class="btn btn-accent-corp btn-sm" href="registro.php">Registrarse</a>
-                </li>
-            </ul>
+<?php
+$current_page = basename($_SERVER['PHP_SELF']);
+$public_nav = [
+    'index.php' => 'Inicio',
+    'paquetes.php' => 'Rastreo',
+    'mapa.php' => 'Sucursales',
+    'contacto.php' => 'Contacto',
+];
+?>
+<header class="site-header">
+    <nav class="navbar navbar-expand-xl navbar-dark public-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand brand-mark" href="index.php">
+                <span class="brand-icon"><i class="bi bi-box-seam"></i></span>
+                <span>
+                    Cookie<span>Express</span>
+                    <small>Logistica internacional</small>
+                </span>
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Abrir navegacion">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ms-auto align-items-xl-center gap-xl-2">
+<?php foreach ($public_nav as $file => $label): ?>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo $current_page === $file ? 'active' : ''; ?>" href="<?php echo $file; ?>">
+                            <?php echo $label; ?>
+                        </a>
+                    </li>
+<?php endforeach; ?>
+                    <li class="nav-item ms-xl-3 mt-3 mt-xl-0">
+                        <a class="btn btn-outline-light btn-sm px-3" href="login.php">Iniciar sesion</a>
+                    </li>
+                    <li class="nav-item mt-2 mt-xl-0">
+                        <a class="btn btn-brand btn-sm px-3" href="registro.php">Crear casillero</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+</header>

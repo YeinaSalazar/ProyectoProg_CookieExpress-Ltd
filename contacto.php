@@ -1,151 +1,122 @@
 <?php
-// Configuración de la página
-$page_title = "Atención al Cliente";
-$page_css = "contacto";
-$page_js = "contacto";
-
-// Incluir cabeceras
+$page_title = 'Contacto';
+$page_description = 'Canales de contacto y soporte de CookieExpress Ltda.';
+$page_css = 'contacto';
+$page_js = 'contacto';
+$body_class = 'public-body';
 include 'shared/head.php';
 include 'shared/header.php';
 ?>
-
-<main class="contacto-wrapper bg-light py-5">
-    <div class="container mb-5 text-center" data-aos="fade-down">
-        <h1 class="display-5 fw-bold font-montserrat color-primary-corp mb-3">¿Cómo podemos ayudarte?</h1>
-        <p class="lead text-muted mx-auto" style="max-width: 600px;">
-            Nuestro equipo de soporte logístico está listo para resolver tus dudas sobre importaciones, rastreos y aduanas.
-        </p>
-    </div>
-
-    <div class="container">
-        <div class="row g-5">
-            
-            <div class="col-lg-5" data-aos="fade-right" data-aos-delay="100">
-                
-                <div class="d-flex flex-column gap-3 mb-5">
-                    <div class="card border-0 shadow-sm contact-info-card p-3 d-flex flex-row align-items-center">
-                        <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle me-3">
-                            <i class="fa-solid fa-location-dot fs-4"></i>
-                        </div>
-                        <div>
-                            <h6 class="font-montserrat fw-bold mb-1">Oficina Central</h6>
-                            <p class="text-muted small mb-0">San José, Costa Rica</p>
-                        </div>
-                    </div>
-
-                    <div class="card border-0 shadow-sm contact-info-card p-3 d-flex flex-row align-items-center">
-                        <div class="bg-accent-corp bg-opacity-10 text-accent-corp p-3 rounded-circle me-3">
-                            <i class="fa-solid fa-phone fs-4"></i>
-                        </div>
-                        <div>
-                            <h6 class="font-montserrat fw-bold mb-1">Teléfono</h6>
-                            <p class="text-muted small mb-0">+506 8000-0000</p>
-                        </div>
-                    </div>
-
-                    <div class="card border-0 shadow-sm contact-info-card p-3 d-flex flex-row align-items-center">
-                        <div class="bg-success bg-opacity-10 text-success p-3 rounded-circle me-3">
-                            <i class="fa-solid fa-envelope fs-4"></i>
-                        </div>
-                        <div>
-                            <h6 class="font-montserrat fw-bold mb-1">Correo Electrónico</h6>
-                            <p class="text-muted small mb-0">soporte@cookieexpress.com</p>
-                        </div>
-                    </div>
-                </div>
-
-                <h4 class="font-montserrat fw-bold mb-4 color-primary-corp">Preguntas Frecuentes</h4>
-                <div class="accordion shadow-sm" id="faqAccordion">
-                    <div class="accordion-item border-0 border-bottom">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                ¿Cuánto tarda en llegar mi paquete?
-                            </button>
-                        </h2>
-                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body text-muted small">
-                                Una vez que recibimos tu paquete en nuestra bodega de Miami, el tiempo de tránsito hacia Costa Rica es de 24 a 48 horas hábiles, más el tiempo de liberación aduanal.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item border-0 border-bottom">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                ¿Qué artículos están prohibidos?
-                            </button>
-                        </h2>
-                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body text-muted small">
-                                Por regulaciones aduaneras y de seguridad aérea, no transportamos armas de fuego, explosivos, líquidos inflamables, dinero en efectivo o animales vivos.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item border-0">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                                ¿Cómo subo mi factura?
-                            </button>
-                        </h2>
-                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body text-muted small">
-                                Inicia sesión en tu casillero, ve a la sección de "Rastreo", ubica el paquete que requiere acción y haz clic en el botón naranja "Subir Factura". Aceptamos PDF y JPG.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+<main class="contact-page py-5">
+    <section class="container py-4 py-lg-5">
+        <div class="row g-4 align-items-center mb-5">
+            <div class="col-lg-6" data-aos="fade-up">
+                <span class="section-label text-dark border-dark-subtle bg-white">Atencion y soporte</span>
+                <h1 class="section-heading mt-4">Canales claros para consultas comerciales, seguimiento operativo y soporte al cliente.</h1>
+                <p class="section-copy">La seccion de contacto esta preparada para validacion front end y para conectarse despues con tu API RESTful sin cambiar la experiencia visual.</p>
             </div>
-
-            <div class="col-lg-7" data-aos="fade-left" data-aos-delay="200">
-                <div class="card border-0 shadow-lg p-4 p-md-5 rounded-4 bg-white h-100">
-                    <h3 class="fw-bold font-montserrat mb-4">Envíanos un mensaje</h3>
-                    
-                    <form id="formularioContactoGeneral" novalidate>
-                        <div class="row g-3">
-                            <div class="col-md-6 mb-2">
-                                <label for="nombreContacto" class="form-label small fw-bold">Nombre Completo</label>
-                                <input type="text" class="form-control bg-light" id="nombreContacto" name="nombre" required>
-                                <div class="invalid-feedback">Por favor, ingresa tu nombre.</div>
-                            </div>
-                            
-                            <div class="col-md-6 mb-2">
-                                <label for="emailContacto" class="form-label small fw-bold">Correo Electrónico</label>
-                                <input type="email" class="form-control bg-light" id="emailContacto" name="email" required>
-                                <div class="invalid-feedback">Ingresa un correo electrónico válido.</div>
-                            </div>
-
-                            <div class="col-12 mb-2">
-                                <label for="asuntoContacto" class="form-label small fw-bold">Asunto</label>
-                                <select class="form-select bg-light" id="asuntoContacto" name="asunto" required>
-                                    <option value="" selected disabled>Selecciona una opción...</option>
-                                    <option value="rastreo">Problema con el rastreo</option>
-                                    <option value="factura">Dudas sobre facturación/aduanas</option>
-                                    <option value="registro">Problemas al crear cuenta</option>
-                                    <option value="otros">Otros</option>
-                                </select>
-                                <div class="invalid-feedback">Por favor, selecciona un asunto.</div>
-                            </div>
-                            
-                            <div class="col-12 mb-4">
-                                <label for="mensajeContacto" class="form-label small fw-bold">Mensaje</label>
-                                <textarea class="form-control bg-light" id="mensajeContacto" name="mensaje" rows="5" placeholder="Escribe los detalles de tu consulta aquí..." required></textarea>
-                                <div class="invalid-feedback">El mensaje no puede estar vacío.</div>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary-corp w-100 py-3 rounded-3 text-white fw-bold d-flex justify-content-center align-items-center mt-auto">
-                            <span id="btnContactoText">Enviar Mensaje</span>
-                            <div id="btnContactoSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></div>
-                        </button>
-                    </form>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="contact-hero-card glass-card">
+                    <div class="contact-highlight">
+                        <span>Tiempo promedio de respuesta</span>
+                        <strong>30 minutos</strong>
+                    </div>
+                    <div class="contact-grid-mini">
+                        <article><small>Soporte</small><strong>Lun-Sab</strong></article>
+                        <article><small>Correo</small><strong>24/7</strong></article>
+                        <article><small>Oficinas</small><strong>4 activas</strong></article>
+                    </div>
                 </div>
             </div>
-
         </div>
-    </div>
-</main>
 
-<?php 
-include 'shared/footer.php';
-include 'shared/scripts.php'; 
-?>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="glass-card h-100" data-aos="fade-up">
+                    <div class="contact-info-list">
+                        <article>
+                            <i class="bi bi-geo-alt"></i>
+                            <div><strong>Oficina central</strong><span>San Pedro, San Jose, Costa Rica</span></div>
+                        </article>
+                        <article>
+                            <i class="bi bi-telephone"></i>
+                            <div><strong>Telefono</strong><span>+506 2255-1840</span></div>
+                        </article>
+                        <article>
+                            <i class="bi bi-envelope"></i>
+                            <div><strong>Correo</strong><span>soporte@cookieexpress.com</span></div>
+                        </article>
+                        <article>
+                            <i class="bi bi-clock"></i>
+                            <div><strong>Horario</strong><span>Lunes a sabado, 8:00 a.m. - 6:00 p.m.</span></div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="glass-card h-100" data-aos="fade-up" data-aos-delay="80">
+                    <div class="row g-4">
+                        <div class="col-lg-7">
+                            <h2 class="h3 mb-3">Escribenos</h2>
+                            <form id="contactForm" novalidate>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="contactName">Nombre completo</label>
+                                        <input class="form-control" id="contactName" name="name" type="text" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="contactEmail">Correo electronico</label>
+                                        <input class="form-control" id="contactEmail" name="email" type="email" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="contactPhone">Telefono</label>
+                                        <input class="form-control" id="contactPhone" name="phone" type="tel">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="contactReason">Motivo</label>
+                                        <select class="form-select" id="contactReason" name="reason" required>
+                                            <option value="">Seleccione una opcion</option>
+                                            <option value="seguimiento">Seguimiento</option>
+                                            <option value="facturacion">Facturacion y cobros</option>
+                                            <option value="registro">Cuenta y acceso</option>
+                                            <option value="corporativo">Solicitud corporativa</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="contactMessage">Mensaje</label>
+                                        <textarea class="form-control" id="contactMessage" name="message" required></textarea>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                                        <span class="text-muted-soft small">Placeholder listo para envio por AJAX.</span>
+                                        <button class="btn btn-brand" type="submit">Enviar consulta</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="faq-panel">
+                                <h3 class="h5 mb-3">Consultas frecuentes</h3>
+                                <div class="accordion" id="faqAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne">Cuanto dura el transito desde Miami?</button></h2>
+                                        <div id="faqOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">Entre 24 y 48 horas habiles, mas liberacion aduanal y ruta de entrega local.</div></div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwo">Como subo mi factura?</button></h2>
+                                        <div id="faqTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Desde el detalle del paquete o mediante el modal operativo disponible en el panel del cliente.</div></div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqThree">Puedo solicitar entrega express?</button></h2>
+                                        <div id="faqThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Si, el catalogo de parametros contempla servicios premium y recargos asociados.</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<?php include 'shared/footer.php'; ?>
+<?php include 'shared/scripts.php'; ?>

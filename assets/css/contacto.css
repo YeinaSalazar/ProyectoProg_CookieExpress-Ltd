@@ -1,43 +1,84 @@
-/* =========================================
-   ESTILOS ESPECÍFICOS: CONTACTO
-   ========================================= */
-
-/* Efecto hover en las tarjetas de información */
-.contact-info-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border-left: 4px solid transparent;
+.contact-page {
+    min-height: 70vh;
 }
 
-.contact-info-card:hover {
-    transform: translateX(5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important;
-    border-left-color: var(--accent-color);
+.contact-hero-card {
+    padding: 1.5rem;
 }
 
-/* Estilos personalizados para el Acordeón (FAQ) para que coincida con la marca */
-.accordion-button:not(.collapsed) {
-    background-color: rgba(10, 37, 64, 0.05); /* Azul corporativo muy claro */
-    color: var(--primary-color);
-    box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+.contact-highlight {
+    padding: 1.4rem;
+    margin-bottom: 1rem;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #0b223f 0%, #153c67 100%);
+    color: #fff;
 }
 
-.accordion-button:focus {
+.contact-highlight span {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.contact-highlight strong {
+    font-size: 2rem;
+}
+
+.contact-grid-mini {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.contact-grid-mini article,
+.contact-info-list article {
+    padding: 1rem;
+    border-radius: 18px;
+    background: rgba(12, 35, 64, 0.04);
+}
+
+.contact-grid-mini small,
+.contact-info-list span {
+    display: block;
+    color: var(--muted);
+}
+
+.contact-info-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.contact-info-list article {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.contact-info-list i {
+    display: inline-grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background: rgba(255, 122, 26, 0.1);
+    color: var(--accent);
+    font-size: 1.2rem;
+}
+
+.faq-panel .accordion-item {
+    margin-bottom: 0.85rem;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.faq-panel .accordion-button {
+    font-weight: 700;
     box-shadow: none;
-    border-color: rgba(0,0,0,.125);
 }
 
-.accordion-button::after {
-    filter: grayscale(100%);
-}
-
-.accordion-button:not(.collapsed)::after {
-    filter: none;
-}
-
-/* Utilidad de color */
-.bg-accent-corp {
-    background-color: var(--accent-color) !important;
-}
-.text-accent-corp {
-    color: var(--accent-color) !important;
+@media (max-width: 767.98px) {
+    .contact-grid-mini {
+        grid-template-columns: 1fr;
+    }
 }

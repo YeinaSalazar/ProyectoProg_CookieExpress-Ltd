@@ -1,75 +1,67 @@
 <?php
-// Configuración de la página
-$page_title = "Iniciar Sesión";
-$page_css = "auth";
-$page_js = "auth";
-
-// Incluir cabecera HTML (No incluimos el header.php completo para una experiencia inmersiva, pero sí un botón de regreso)
+$page_title = 'Iniciar sesion';
+$page_description = 'Acceso al sistema CookieExpress Ltda.';
+$page_css = 'auth';
+$page_js = 'auth';
+$body_class = 'auth-body';
 include 'shared/head.php';
 ?>
-
-<main class="auth-wrapper d-flex align-items-center justify-content-center min-vh-100">
-    <div class="auth-background"></div>
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-5" data-aos="zoom-in" data-aos-duration="800">
-                <div class="card auth-card border-0 shadow-lg p-4 p-md-5 rounded-4 position-relative z-index-2 bg-white">
-                    
-                    <a href="index.php" class="text-decoration-none text-muted small mb-4 d-inline-block back-link">
-                        <i class="fa-solid fa-arrow-left me-2"></i>Volver al inicio
-                    </a>
-
-                    <div class="text-center mb-4">
-                        <h2 class="font-montserrat fw-bold color-primary-corp">
-                            <i class="fa-solid fa-box-fast text-accent-corp me-2"></i>Bienvenido
-                        </h2>
-                        <p class="text-muted small">Ingresa a tu casillero de CookieExpress</p>
+<main class="auth-page">
+    <section class="auth-shell">
+        <div class="container py-5">
+            <div class="row align-items-center g-5 min-vh-100">
+                <div class="col-lg-5 d-none d-lg-block" data-aos="fade-right">
+                    <div class="auth-copy-panel">
+                        <span class="section-label">Acceso seguro</span>
+                        <h1 class="section-heading mt-4 text-white">Un mismo sistema, tres experiencias privadas y una base lista para API real.</h1>
+                        <p class="text-white-50">Esta pantalla esta preparada para autenticacion por sesion o token, con helpers reutilizables y modal de recuperacion integrado.</p>
+                        <div class="auth-role-list">
+                            <article><strong>Administrador</strong><span>KPIs, usuarios, parametros y reportes.</span></article>
+                            <article><strong>Logistica</strong><span>Recepcion, cambios de estado y control operativo.</span></article>
+                            <article><strong>Cliente</strong><span>Casillero, historial y expediente de paquetes.</span></article>
+                        </div>
                     </div>
-
-                    <form id="loginForm" novalidate>
-                        <div class="mb-3">
-                            <label for="email" class="form-label small fw-bold">Correo Electrónico</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-envelope text-muted"></i></span>
-                                <input type="email" class="form-control border-start-0 ps-0 bg-light" id="email" name="email" placeholder="tu@correo.com" required>
-                                <div class="invalid-feedback">Ingresa un correo válido.</div>
-                            </div>
+                </div>
+                <div class="col-lg-7 col-xl-5 ms-xl-auto" data-aos="fade-left">
+                    <div class="auth-card p-4 p-lg-5">
+                        <a class="auth-back" href="index.php"><i class="bi bi-arrow-left"></i> Volver al inicio</a>
+                        <div class="mb-4">
+                            <h2 class="mb-2">Bienvenido a CookieExpress</h2>
+                            <p class="text-muted-soft mb-0">Ingresa con tu cuenta para consultar el panel correspondiente.</p>
                         </div>
-
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <label for="password" class="form-label small fw-bold mb-0">Contraseña</label>
-                                <a href="#" class="small text-accent-corp text-decoration-none">¿Olvidaste tu contraseña?</a>
+                        <form id="loginForm" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label" for="loginEmail">Correo electronico</label>
+                                <input class="form-control" id="loginEmail" name="email" type="email" placeholder="nombre@correo.com" required>
                             </div>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-lock text-muted"></i></span>
-                                <input type="password" class="form-control border-start-0 border-end-0 ps-0 bg-light" id="password" name="password" placeholder="••••••••" required>
-                                <button class="btn btn-light border border-start-0 text-muted toggle-password" type="button">
-                                    <i class="fa-regular fa-eye"></i>
-                                </button>
-                                <div class="invalid-feedback">La contraseña es obligatoria.</div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="form-label mb-0" for="loginPassword">Contrasena</label>
+                                    <button class="btn btn-link p-0 auth-link" type="button" data-bs-toggle="modal" data-bs-target="#modalRecuperarPassword">Recuperar acceso</button>
+                                </div>
+                                <div class="input-group auth-input-group">
+                                    <input class="form-control" id="loginPassword" name="password" type="password" required>
+                                    <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#loginPassword"><i class="bi bi-eye"></i></button>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="mb-4 form-check">
-                            <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
-                            <label class="form-check-label small text-muted" for="rememberMe">Recordar mis datos</label>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary-corp w-100 py-3 rounded-3 text-white fw-bold d-flex justify-content-center align-items-center">
-                            <span id="btnLoginText">Ingresar al Casillero</span>
-                            <div id="btnLoginSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></div>
-                        </button>
-                    </form>
-
-                    <div class="text-center mt-4">
-                        <p class="small text-muted mb-0">¿Aún no tienes casillero? <a href="registro.php" class="text-accent-corp fw-bold text-decoration-none">Regístrate gratis</a></p>
+                            <div class="mb-4">
+                                <label class="form-label" for="loginRole">Rol demo</label>
+                                <select class="form-select" id="loginRole" name="role">
+                                    <option value="cliente">Cliente</option>
+                                    <option value="logistica">Logistica</option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                            </div>
+                            <div class="d-grid gap-3">
+                                <button class="btn btn-brand" type="submit">Ingresar al sistema</button>
+                                <a class="btn btn-outline-brand" href="registro.php">Crear cuenta de cliente</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </main>
-
+<?php include 'shared/modals/modal-recuperar-password.php'; ?>
 <?php include 'shared/scripts.php'; ?>

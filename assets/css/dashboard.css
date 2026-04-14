@@ -1,0 +1,30 @@
+.dashboard-hero,
+.filters-row {
+    display: grid;
+    gap: 1rem;
+}
+
+.filters-row {
+    grid-template-columns: minmax(0, 1.6fr) minmax(220px, 0.8fr) auto;
+    align-items: center;
+}
+
+.package-summary ul li,
+.profile-aside ul li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.package-summary ul li:last-child,
+.profile-aside ul li:last-child {
+    border-bottom: 0;
+}
+
+@media (max-width: 767.98px) {
+    .filters-row {
+        grid-template-columns: 1fr;
+    }
+}

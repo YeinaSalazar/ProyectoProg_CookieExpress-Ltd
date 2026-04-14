@@ -1,71 +1,190 @@
-/* =========================================
-   ESTILOS ESPECÍFICOS: INDEX.PHP
-   ========================================= */
-
-/* Utilidad para el título de sección */
-.color-primary-corp {
-    color: var(--primary-color);
+.home-page section {
+    position: relative;
 }
 
-.divider-corp {
-    width: 60px;
-    height: 4px;
-    background-color: var(--accent-color);
-    border-radius: 2px;
+.hero-home {
+    padding: 5.5rem 0 4rem;
+    color: #fff;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(255, 122, 26, 0.24), transparent 22%),
+        radial-gradient(circle at 80% 10%, rgba(72, 146, 255, 0.18), transparent 24%),
+        linear-gradient(135deg, #06162b 0%, #0c2340 48%, #133b67 100%);
 }
 
-/* Efecto Parallax para el Hero Section */
-.hero-section {
-    min-height: 80vh;
-    /* Imagen de fondo representativa (puedes cambiarla luego) */
-    background-image: url('https://images.unsplash.com/photo-1586528116311-ad8ed3c91292?q=80&w=2070&auto=format&fit=crop'); 
-    background-attachment: fixed; /* Esto crea el efecto Parallax */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-/* Capa oscura para resaltar el texto del Hero */
-.hero-section .overlay {
+.hero-home::after {
+    content: '';
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: auto 0 0;
+    height: 140px;
+    background: linear-gradient(180deg, rgba(6, 22, 43, 0) 0%, rgba(244, 247, 251, 1) 100%);
+}
+
+.hero-copy {
+    max-width: 620px;
+    font-size: 1.08rem;
+    line-height: 1.8;
+}
+
+.hero-stat-card {
+    height: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero-stat-card strong {
+    display: block;
+    margin-bottom: 0.45rem;
+    font-size: 1.7rem;
+}
+
+.hero-visual {
+    position: relative;
+    min-height: 420px;
+}
+
+.hero-route-card {
+    position: relative;
+    z-index: 2;
+    margin: 3rem auto 0;
+    max-width: 420px;
+    padding: 1.5rem;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 30px 60px rgba(2, 10, 20, 0.26);
+    backdrop-filter: blur(18px);
+}
+
+.hero-route-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.hero-route-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    font-weight: 700;
+}
+
+.route-status-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.9rem;
+}
+
+.route-status-grid article {
+    padding: 0.9rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.route-status-grid small {
+    display: block;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.route-status-grid strong {
+    font-size: 1.4rem;
+}
+
+#heroOrbits {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(10, 37, 64, 0.9) 0%, rgba(10, 37, 64, 0.6) 100%);
-    z-index: 1;
 }
 
-/* Tarjetas de Servicios - Efectos Hover */
-.service-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid transparent;
+.story-section,
+.testimonials-section {
+    background: transparent;
 }
 
-.service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
-    border-color: rgba(255, 107, 0, 0.2);
+.feature-card,
+.quote-card,
+.process-card {
+    height: 100%;
 }
 
-.icon-wrapper {
-    transition: all 0.3s ease;
+.feature-card i,
+.process-card span {
+    display: inline-grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    margin-bottom: 1.2rem;
+    border-radius: 18px;
+    background: rgba(12, 35, 64, 0.06);
+    color: var(--brand);
+    font-size: 1.4rem;
 }
 
-.service-card:hover .icon-wrapper {
-    background-color: var(--accent-color) !important;
+.feature-card h3,
+.process-card h3,
+.quote-card strong {
+    font-size: 1.2rem;
 }
 
-.service-card:hover .icon-wrapper i {
-    color: white !important;
+.process-card {
+    padding: 1.6rem;
+    border-radius: 24px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(244, 247, 251, 0.9) 100%);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    box-shadow: var(--shadow-sm);
 }
 
-/* Estilo para el botón primario sobre fondo blanco */
-.btn-primary-corp {
-    background-color: var(--primary-color);
-    transition: background-color 0.3s ease;
+.process-card span {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--accent);
+    background: rgba(255, 122, 26, 0.1);
 }
 
-.btn-primary-corp:hover {
-    background-color: #06182a;
+.quote-card.accent {
+    background: linear-gradient(180deg, rgba(12, 35, 64, 0.95) 0%, rgba(19, 59, 103, 0.92) 100%);
+    color: #fff;
+}
+
+.quote-card span {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--muted);
+}
+
+.quote-card.accent span {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.cta-panel {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    align-items: center;
+    padding: 2.2rem;
+    border-radius: 32px;
+    background: linear-gradient(135deg, #071b31 0%, #12385f 65%, #1b4a79 100%);
+    box-shadow: var(--shadow-md);
+}
+
+.cta-panel h2 {
+    color: #fff;
+}
+
+@media (max-width: 991.98px) {
+    .hero-home {
+        padding-top: 4.5rem;
+    }
+
+    .cta-panel {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }

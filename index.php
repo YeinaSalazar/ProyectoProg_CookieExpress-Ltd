@@ -1,116 +1,198 @@
 <?php
-// Configuración de la página
-$page_title = "Inicio";
-$page_css = "home";
-$page_js = "home";
-
-// Incluir cabeceras
+$page_title = 'Inicio';
+$page_description = 'Landing corporativa de CookieExpress Ltda para la gestion de envios internacionales.';
+$page_css = 'home';
+$page_js = 'home';
+$body_class = 'public-body';
 include 'shared/head.php';
 include 'shared/header.php';
 ?>
-
-<main>
-    <section class="hero-section d-flex align-items-center position-relative">
-        <div class="overlay"></div>
-        <div class="container position-relative text-white text-center" style="z-index: 2;">
-            <h1 class="display-3 fw-bold font-montserrat mb-4" data-aos="fade-down" data-aos-duration="1000">
-                Tu mundo, entregado en <span class="text-accent-corp">tus manos</span>
-            </h1>
-            <p class="lead mb-5 fw-light" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                Comprá en cualquier parte del mundo. Nosotros nos encargamos de la logística, aduanas y de llevarlo hasta la puerta de tu casa de forma rápida y segura.
-            </p>
-            <div data-aos="zoom-in" data-aos-delay="400">
-                <a href="registro.php" class="btn btn-accent-corp btn-lg me-3 px-5 py-3 rounded-pill">Abre tu Casillero Gratis</a>
-                <a href="paquetes.php" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill">Rastrear un Paquete</a>
+<main class="home-page">
+    <section class="hero-home position-relative overflow-hidden">
+        <div class="hero-noise"></div>
+        <div class="container position-relative">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-7">
+                    <span class="section-label mb-4" data-aos="fade-up">Trazabilidad premium para envios internacionales</span>
+                    <h1 class="section-heading text-white" data-aos="fade-up" data-aos-delay="80">Gestionamos cada paquete con precision operativa, visibilidad total y una experiencia digital a la altura de una marca global.</h1>
+                    <p class="hero-copy text-white-50" data-aos="fade-up" data-aos-delay="140">CookieExpress Ltda conecta compras, bodega, aduana, transporte y entrega final en un flujo claro para clientes, personal logistico y administracion.</p>
+                    <div class="d-flex flex-wrap gap-3 mt-4" data-aos="fade-up" data-aos-delay="200">
+                        <a class="btn btn-brand" href="registro.php">Abrir casillero gratis</a>
+                        <a class="btn btn-outline-light rounded-pill px-4" href="paquetes.php">Rastrear paquete</a>
+                    </div>
+                    <div class="row g-3 mt-4">
+                        <div class="col-sm-4">
+                            <div class="hero-stat-card glass-card text-white">
+                                <strong>24h</strong>
+                                <span>Ventana promedio de procesamiento en bodega Miami.</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="hero-stat-card glass-card text-white">
+                                <strong>98.4%</strong>
+                                <span>Paquetes con actualizacion de estado dentro del SLA operativo.</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="hero-stat-card glass-card text-white">
+                                <strong>3 roles</strong>
+                                <span>Experiencias diferenciadas para cliente, logistica y administracion.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="hero-visual" data-aos="fade-left">
+                        <div class="hero-route-card">
+                            <div class="hero-route-top">
+                                <span>Ruta destacada</span>
+                                <strong>Miami Hub 07</strong>
+                            </div>
+                            <div class="hero-route-line">
+                                <span>Compra online</span>
+                                <i class="bi bi-arrow-right"></i>
+                                <span>Bodega</span>
+                                <i class="bi bi-arrow-right"></i>
+                                <span>Aduana</span>
+                                <i class="bi bi-arrow-right"></i>
+                                <span>Entrega</span>
+                            </div>
+                            <div class="route-status-grid">
+                                <article>
+                                    <small>En recepcion</small>
+                                    <strong>126</strong>
+                                </article>
+                                <article>
+                                    <small>En vuelo</small>
+                                    <strong>54</strong>
+                                </article>
+                                <article>
+                                    <small>En reparto</small>
+                                    <strong>18</strong>
+                                </article>
+                            </div>
+                        </div>
+                        <canvas id="heroOrbits" width="520" height="420" aria-hidden="true"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="py-5 bg-white">
-        <div class="container py-5">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="fw-bold font-montserrat color-primary-corp">Nuestros Servicios</h2>
-                <div class="divider-corp mx-auto my-3"></div>
-                <p class="text-muted">Soluciones logísticas integrales diseñadas para tu comodidad.</p>
+    <section class="story-section py-5">
+        <div class="container py-4 py-lg-5">
+            <div class="row g-4 align-items-start">
+                <div class="col-lg-5" data-aos="fade-up">
+                    <span class="section-label text-dark border-dark-subtle bg-white">Por que CookieExpress</span>
+                    <h2 class="section-heading mt-4">Una plataforma pensada para trazabilidad real, no solo para verse bien.</h2>
+                    <p class="section-copy">Disenamos una experiencia front end que deja lista la integracion futura con AJAX, API RESTful, dashboards por rol y expedientes operativos completos.</p>
+                </div>
+                <div class="col-lg-7">
+                    <div class="row g-4">
+                        <div class="col-md-6" data-aos="fade-up" data-aos-delay="80">
+                            <article class="glass-card feature-card h-100">
+                                <i class="bi bi-radar"></i>
+                                <h3>Seguimiento visible</h3>
+                                <p>Estados claros, hitos de operacion y timeline listos para conectarse con eventos reales del backend.</p>
+                            </article>
+                        </div>
+                        <div class="col-md-6" data-aos="fade-up" data-aos-delay="120">
+                            <article class="glass-card feature-card h-100">
+                                <i class="bi bi-grid-1x2"></i>
+                                <h3>Dashboards por rol</h3>
+                                <p>Interfaces privadas diferenciadas para decisiones administrativas, ejecucion logistica y consulta del cliente.</p>
+                            </article>
+                        </div>
+                        <div class="col-md-6" data-aos="fade-up" data-aos-delay="160">
+                            <article class="glass-card feature-card h-100">
+                                <i class="bi bi-shield-check"></i>
+                                <h3>Base escalable</h3>
+                                <p>Componentes compartidos, modales reutilizables y helpers JS consistentes con un proyecto clasico en XAMPP.</p>
+                            </article>
+                        </div>
+                        <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                            <article class="glass-card feature-card h-100">
+                                <i class="bi bi-globe-americas"></i>
+                                <h3>Operacion internacional</h3>
+                                <p>Contenido creible para importaciones, sucursales, tarifas y procesamiento aduanal en contexto realista.</p>
+                            </article>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
+        </div>
+    </section>
+
+    <section class="process-section py-5">
+        <div class="container py-lg-5">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-4 mb-5">
+                <div>
+                    <span class="section-label text-dark border-dark-subtle bg-white">Proceso logistico</span>
+                    <h2 class="section-heading mt-4 mb-0">Del checkout a la entrega, con un flujo que el usuario entiende en segundos.</h2>
+                </div>
+                <p class="section-copy mb-0">Cada etapa se comunica con claridad para reducir ansiedad, soporte innecesario y dudas sobre impuestos, estatus o documentos pendientes.</p>
+            </div>
             <div class="row g-4">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card h-100 border-0 shadow-sm service-card p-4 text-center">
-                        <div class="icon-wrapper bg-light rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                            <i class="fa-solid fa-plane-departure fs-2 text-accent-corp"></i>
-                        </div>
-                        <h4 class="font-montserrat fw-bold mb-3">Casillero Internacional</h4>
-                        <p class="text-muted small">Dirección física en Miami para que realices tus compras en USA, China o Europa sin complicaciones.</p>
-                    </div>
+                <div class="col-md-3" data-aos="fade-up">
+                    <div class="process-card"><span>01</span><h3>Compra internacional</h3><p>El cliente compra en tiendas de USA, Europa o Asia y utiliza su casillero asignado.</p></div>
                 </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card h-100 border-0 shadow-sm service-card p-4 text-center">
-                        <div class="icon-wrapper bg-light rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                            <i class="fa-solid fa-shield-halved fs-2 text-accent-corp"></i>
-                        </div>
-                        <h4 class="font-montserrat fw-bold mb-3">Gestión Aduanal</h4>
-                        <p class="text-muted small">Nos encargamos de todos los trámites e impuestos. Tarifas transparentes sin sorpresas ocultas.</p>
-                    </div>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="80">
+                    <div class="process-card"><span>02</span><h3>Recepcion en bodega</h3><p>El operador valida ingreso, peso, evidencia fotografica y documentos requeridos.</p></div>
                 </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="card h-100 border-0 shadow-sm service-card p-4 text-center">
-                        <div class="icon-wrapper bg-light rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                            <i class="fa-solid fa-truck-fast fs-2 text-accent-corp"></i>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="140">
+                    <div class="process-card"><span>03</span><h3>Transito y aduana</h3><p>El sistema presenta costos, incidencias y cambios de estado con lenguaje claro.</p></div>
+                </div>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="process-card"><span>04</span><h3>Entrega o retiro</h3><p>La plataforma confirma salida a reparto y cierra el expediente del paquete.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials-section py-5">
+        <div class="container py-lg-5">
+            <div class="row g-4">
+                <div class="col-lg-4" data-aos="fade-right">
+                    <span class="section-label text-dark border-dark-subtle bg-white">Percepcion de marca</span>
+                    <h2 class="section-heading mt-4">Una interfaz sobria que transmite control y confianza.</h2>
+                </div>
+                <div class="col-lg-8">
+                    <div class="row g-4">
+                        <div class="col-md-6" data-aos="fade-up">
+                            <div class="glass-card quote-card h-100">
+                                <p>La visibilidad del expediente reduce tickets de soporte y mejora la sensacion de control del cliente final.</p>
+                                <strong>Coordinacion de servicio</strong>
+                                <span>Operacion Costa Rica</span>
+                            </div>
                         </div>
-                        <h4 class="font-montserrat fw-bold mb-3">Entrega Última Milla</h4>
-                        <p class="text-muted small">Flota propia para asegurar que tu paquete llegue intacto hasta tu hogar u oficina.</p>
+                        <div class="col-md-6" data-aos="fade-up" data-aos-delay="120">
+                            <div class="glass-card quote-card h-100 accent">
+                                <p>La diferenciacion por rol permite que cada perfil vea solo lo necesario sin sacrificar informacion critica.</p>
+                                <strong>Analista academico</strong>
+                                <span>Programacion III</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-5 bg-light">
-        <div class="container py-5">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
-                    <h3 class="fw-bold font-montserrat mb-4">Encuéntranos</h3>
-                    <p class="text-muted mb-4">Nuestra central logística está ubicada estratégicamente para procesar tus envíos con la mayor agilidad.</p>
-                    <div id="locationMap" class="rounded shadow-sm" style="height: 400px; width: 100%; z-index: 1;"></div>
+    <section class="cta-band py-5">
+        <div class="container">
+            <div class="cta-panel" data-aos="zoom-in">
+                <div>
+                    <span class="section-label">Listo para integracion</span>
+                    <h2 class="mt-4">Front end preparado para conectar CRUD, sesiones y AJAX reales.</h2>
+                    <p class="mb-0 text-white-50">Explora la version publica o entra a los paneles demo para revisar la base administrativa.</p>
                 </div>
-                
-                <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
-                    <div class="card border-0 shadow-lg p-4 p-md-5 rounded-4">
-                        <h3 class="fw-bold font-montserrat mb-4 text-center">¿Tienes dudas?</h3>
-                        <form id="contactForm" novalidate>
-                            <div class="mb-3">
-                                <label for="nombre" class="form-label small fw-bold">Nombre Completo</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required>
-                                <div class="invalid-feedback">Por favor, ingresa tu nombre.</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label small fw-bold">Correo Electrónico</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                                <div class="invalid-feedback">Ingresa un correo electrónico válido.</div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="mensaje" class="form-label small fw-bold">Mensaje</label>
-                                <textarea class="form-control" id="mensaje" name="mensaje" rows="4" required></textarea>
-                                <div class="invalid-feedback">El mensaje no puede estar vacío.</div>
-                            </div>
-                            <button type="submit" class="btn btn-primary-corp w-100 py-3 rounded-3 text-white fw-bold d-flex justify-content-center align-items-center">
-                                <span id="btnText">Enviar Mensaje</span>
-                                <div id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></div>
-                            </button>
-                        </form>
-                    </div>
+                <div class="d-flex flex-wrap gap-3">
+                    <a class="btn btn-brand" href="dashboard-admin.php">Ver dashboard admin</a>
+                    <a class="btn btn-outline-light rounded-pill px-4" href="mapa.php">Explorar sucursales</a>
                 </div>
             </div>
         </div>
     </section>
 </main>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<?php 
-// Incluir pie de página y scripts
-include 'shared/footer.php';
-include 'shared/scripts.php'; 
-?>
+<?php include 'shared/footer.php'; ?>
+<?php include 'shared/scripts.php'; ?>
